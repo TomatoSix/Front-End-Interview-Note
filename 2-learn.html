@@ -12,7 +12,19 @@
 <body>
     
   <script>
-
+    var x = 40;
+    function fn() {
+      console.log(x);
+    }
+    var x = 10;
+    function show(f) {
+      var x = 20;
+      (function() {
+        var x = 30;
+        f();
+      })();
+    }
+    show(fn)  // 10, 为什么?
   </script>
 </body>
 </html>
