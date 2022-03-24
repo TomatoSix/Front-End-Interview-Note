@@ -254,9 +254,12 @@ Object.defineProperty(p, "age", {
 
 # v-model
 
-`<input v-model="searchText" /> `
-本质上就是
-`<input :value="searchText" @input="searchText = $event.target.value">`
+1. vue2 的使用
+   `<input v-model="searchText" /> `
+   本质上就是
+   `<input :value="searchText" @input="searchText = $event.target.value">`
+
+2. vue3 的使用
 
 # computed
 
@@ -392,12 +395,6 @@ export default {
      watch(person.value.name, (newValue, oldValue) =>{
        console.log("数据修改了")
      })
-
-
-
-
-
-
      return {
        sum,
        msg,
