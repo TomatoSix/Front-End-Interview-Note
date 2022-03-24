@@ -852,6 +852,105 @@ https://juejin.cn/post/6961222829979697165
 
 26. Vue 模板编译原理
 
+# 插槽的使用
+
+1. 默认插槽
+   定义一个插槽，等着组件的使用者进行填充
+   slot 里面可以填入默认值，如果使用者没有传递具体结构时，使用默认值
+
+   ```js
+   // category组件
+   <div class="category">
+     <h1>这是category组件</h1>
+     <slot>我是默认值,当使用者没有传递具体结构时会出现</slot>
+   </div>
+   ```
+
+   ```js
+   // 使用
+   <Category>
+     <img src="tiger.jpg" alt="">
+   </Category>
+   ```
+
+2. 具名插槽
+   一个具名插槽可以使用多次
+
+   ```js
+   // category组件
+   <div class="category">
+     <h1>这是category组件</h1>
+     <slot name="center">center插槽,默认值</slot>
+     <slot name="footer">footer插槽,默认值</slot>
+     <slot name="footer">footer插槽,默认值</slot>
+   </div>
+   ```
+
+   ```js
+   // 使用 slot="插槽名"
+   <Category>
+     <div slot="center"></div>
+     <div slot="footer"></div>
+   </Category>
+   ```
+
+   ```js
+   // 使用template v-slot:插槽名
+   <Category>
+     <template v-slot:center></template>
+     <template v-slot:footer></template>
+   </Category>
+   ```
+
+3. 作用域插槽 scope
+   有点像 slot 作为父组件传递给使用者子组件
+   把定义插槽组件中的 games 数据传给插槽的使用者 app.vue
+
+   ```cs
+   // category组件 category.vue
+   <div class="category">
+     <h1>这是category组件</h1>
+     <slot :games="games">默认内容</slot>
+   </div>;
+
+   export default {
+     name: "category",
+     date() {
+       return {
+         games: ["满汉全席", "大西瓜", "其它"],
+       };
+     },
+   };
+   ```
+
+   ```js
+   // 使用 app.vue
+   // 可以收到插槽传入的数据
+   // 一定要用
+   // <template scope=""></template>或者<template slot-scope="{}"></template>
+   //包裹插槽内容
+   <Category>
+   <template scope="games">
+   <ul>
+       <li v-for="(item) in games">{{ item }}</li>
+     </ul>
+   </template>
+   </Category>
+   <Category>
+   <template slot-scope="{games}">
+     <ol>
+       <li v-for="(item) in games">{{ item }}</li>
+     </ol>
+   </template>
+   </Category>
+   <Category>
+   <template scope="games">
+       <span v-for="(item) in games">{{ item }}</span>
+   </template>
+   </Category>
+   export default {};
+   ```
+
 # MVC/MVP/MVVM 模式-都是常见的软件架构设计模式
 
 https://juejin.cn/post/6879300070962003982
