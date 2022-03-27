@@ -254,12 +254,154 @@ Object.defineProperty(p, "age", {
 
 # v-model
 
-1. vue2 的使用
+1. vue2 的使用一般只能用于表单中的 value
    `<input v-model="searchText" /> `
-   本质上就是
+   本质上就是， input 是输入框的输入事件(和 click 一样), 输入框一修改就会触发该事件
    `<input :value="searchText" @input="searchText = $event.target.value">`
 
-2. vue3 的使用
+2. vue3 中 新增组件的 v-model
+   父子组件双向绑定属性 title, 如果触发 update:modelValue 事件, 就会把对应的值传给 title
+
+   1. `<Child v-model="title">`
+      实质上就是, 默认绑定 props 中的 modelValue, 修改时触发`update:modelValue`, $event 就是修改的值
+
+      ```js
+      // parent组件
+      <Child v-model="title">
+      <div>{{ title }}</div>
+      // 实际上就是下面这个
+      // <Child :modelValue="title" @update:modelValue = "title = $event">
+      export default {
+        data() {
+          return {
+            title: ''
+          }
+        }
+      };
+      ```
+
+      ```js
+      // 实现子组件中的input框和父组件title属性同步
+      // child组件
+      <input :value="modelValue" @input="btnClick">
+      // child组件, 需要定义modelValue事件和update:modelValue事件
+      export default {
+        props: {
+          modelValue: String,
+        },
+        emits: ['update:modelValue'],
+        setup(props, {emit}) {
+          const btnClick = function(event) {
+            // 会把参数传给update:modelValue事件, 即$event, 因为是自定义的, 即112233传给title
+            this.$emit('update:modelValue', event.target.value)
+          }
+        }
+      };
+      ```
+
+      ```js
+      // 或者使用计算属性
+      // child组件
+      <input v-model="value">
+      // child组件, 需要定义modelValue事件和update:modelValue事件
+      export default {
+        props: {
+          modelValue: String,
+        },
+        emits: ['update:modelValue'],
+        setup(props, {emit}) {
+          const value = computed(() => {
+            set(newVal) {
+              this.$emit('update:modelValue', newVal)
+            },
+            get() {
+              return this.modelValue
+            }
+          })
+        }
+      };
+      ```
+
+   2. 自定义 v-model
+
+      ```js
+      // 父组件
+      <child v-model="message" v-model:title="title">
+      export default{
+        setup() {
+          const message = '你好',
+          const title = '今天学习v-model'
+
+          return {
+            message,
+            title
+          }
+        }
+      }
+
+      ```
+
+      ```js
+      // child组件
+      // 绑定的就是title, 修改时触发'update:title'
+      <div>
+        <btn @click="changeData"></btn>
+      </div>
+
+      export default{
+        props: {
+          modelValue: String, // v-model="message"默认为modelValue
+          title: String
+        },
+        emits: ['update:modelValue', 'update:title']
+        setup(props, {emit}) {
+          // 把标题 title 改为 "v-model学完啦"
+          const changeData = function() {
+            emit('update:title', 'v-model学完啦')
+          }
+
+          return {
+            changeData
+          }
+        }
+      }
+      ```
+
+# v-bind
+
+1. 简写
+
+   ```
+   <div :class="styledata">
+   ```
+
+2. 动态绑定属性
+
+   ```
+   <div :[name]="value"></div>
+   data() {
+     return {
+       name:'abc',
+       value: '123'
+     }
+   }
+   ```
+
+3. 绑定一个对象
+
+   ```
+   <div v-bind="data"></div>
+
+   data() {
+     return {
+       data: {
+         name: 'why',
+         age:18,
+         height:188
+       }
+     }
+   }
+   ```
 
 # computed
 
@@ -676,3 +818,9 @@ setup() {
 # teleport 组件
 
 # suspense 组件
+
+# vue 生命周期
+
+onMounted
+onUpdated
+onUnmounted

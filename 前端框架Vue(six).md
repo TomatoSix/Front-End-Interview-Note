@@ -1934,7 +1934,6 @@ https://juejin.cn/post/6994959998283907102
 # VueComponent 构造函数？
 
 1. 组件的本质是一个名为 VueComponent 的构造函数，且不是程序员定义的，是 Vue.extend 生成的
-2.
 
 # 在开发环境中关于 proxyTable 代理实现跨域
 
