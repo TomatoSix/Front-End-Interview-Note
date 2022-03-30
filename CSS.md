@@ -6,32 +6,34 @@
 
 1. 行内样式: 在网页上通过 style=""属性直接写样式
 
-```html
-<div style="color: green; margin-top: 30px;border: 1px solid red;width: 500px">
-  行内样式实例1
-</div>
-```
+   ```html
+   <div
+     style="color: green; margin-top: 30px;border: 1px solid red;width: 500px"
+   >
+     行内样式实例1
+   </div>
+   ```
 
 2. 内部样式表：在网页上创建嵌入的样式表，通常写在<head></head>
 
-```html
-<style>
-  p {
-    color: #6478de;
-    border: red 1px solid;
-  }
-</style>
-```
+   ```html
+   <style>
+     p {
+       color: #6478de;
+       border: red 1px solid;
+     }
+   </style>
+   ```
 
 3. 链入外部样式表 - link,通常写在<style></style>里面
 
 4. 导入外部样式表： 通过@import 引入其他的 CSS 文件
 
-```html
-<style>
-  @import "qt_02_style.css";
-</style>
-```
+   ```html
+   <style>
+     @import "qt_02_style.css";
+   </style>
+   ```
 
 ## 外部样式分为 <link> 引入和 @import 引入两种方式。这两种方式的区别为：
 
@@ -46,44 +48,6 @@
 -moz- firefox
 -ms- ie
 -o- opera
-
-# 区别 flex:1 flex:0 flex:auto
-
-- flex 是 flex-grow,flex-shrink,flex-basis 3 个属性结合在一起的缩写形式
-  1. flex: none 表示 flex: 0 0 auto
-  2. flex: 1 表示 flex: 1 1 auto
-  3. flex: auto 表示 flex: 1 1 auto
-
-1. 当 flex 取值为一个非负数字，则该数字为 flex-grow 值，flex-shrink 取 1，flex-basis 取 0%，如下是等同的：
-
-```
-.item {flex: 1;} .item { flex-grow: 1; flex-shrink: 1; flex-basis: 0%; }
-```
-
-2. 当 flex 取值为两个非负数字，则分别视为 flex-grow 和 flex-shrink 的值，flex-basis 取 0%，如下是等同的：
-
-```
-.item {flex: 2 3;} .item { flex-grow: 2; flex-shrink: 3; flex-basis: 0%; }
-```
-
-3. 当 flex 取值为一个长度或者百分比，则视为 flex-basis 值，flex-grow 取 1，flex-shrink 取 1，如下是等同的：
-
-```
-.item {flex: 0%;} .item { flex-grow: 1; flex-shrink: 1; flex-basis: 0%; }
-.item {flex: ;} .item { flex-grow: 1; flex-shrink: 1; flex-basis: 0%; }
-```
-
-## flex: 1 是什么意思？
-
-CSS 属性 flex 规定了弹性元素如何伸长或缩短以适应 flex 容器中的可用空间。
-flex 属性是 flex-grow,flex-shrink,flex-basis 的缩写，默认值为 0 1 auto
-
-- flex-grow 属性定义项目的放大比例，默认为 0(即如果存在剩余空间，也不放大)
-- flex-shrink 属性定义了项目的缩小比例，默认为 1(即如果空间不足，该项目将缩小)
-  flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据 flex-shrink 的值
-
-- flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间。默认值为 auto，负值不被允许
-  该值的单位可以是 width 单位 px, 也可以是一个相对于其父弹性盒容器主轴尺寸的百分数
 
 # CSS 盒模型
 
@@ -109,7 +73,7 @@ box-sizing: content-box || border-box || inherit;
     1. id 选择器
     2. class 类选择器
     3. 标签选择器(div,p)
-    4. 通配符(\*)
+    4. 通配符(`*`)
 
 2.  组合选择器
 
@@ -135,10 +99,12 @@ box-sizing: content-box || border-box || inherit;
     1. :first 匹配分页媒体的第一页。
 
     2. :first-child 匹配其父元素的子元素中的第一个元素。
+       例如`span: first-child`要求是父元素第一个子元素必须是 span 标签
 
     3. :nth-child 匹配其父元素的子元素中的第 n 个元素。
 
     4. :first-of-type 匹配兄弟元素中第一个某种类型的元素。
+       `span: first-of-type`只要求找到父元素的第一个 span 元素就可以了
 
     5. LVHA
 
@@ -153,6 +119,18 @@ box-sizing: content-box || border-box || inherit;
 5.  伪元素，创建一些不在文档树中的元素，并为其添加样式，开头为双冒号::
 
     1. ::before 匹配出现在原有元素的实际内容之后的一个可样式化元素。
+
+       ```css
+       P::before {
+         content: "台词:";
+       }
+       ```
+
+       ```html
+       <p>我是唐老鸭</p>
+
+       <!--台词: 我是唐老鸭 -->
+       ```
 
     2. ::after 匹配出现在原有元素的实际内容之前的一个可样式化元素。
 
@@ -272,48 +250,50 @@ opacity：0 则仅仅不可见，但仍可被浏览器发现，也就能触发�
 
 # flex 布局
 
-容器属性:
+1. 容器属性:
 
-    flex-direction: 主轴方向,
-    flex-wrap: 是否换行,
-    flex-flow: flex-direction与flex-wrap的简写,
-    justify-content: 主轴的对齐方式,
-    algin-items: 交叉轴的对齐方式,
-    align-content: 多根轴线的对齐方式
+   flex-direction: 主轴方向,
+   flex-wrap: 是否换行,
+   flex-flow: flex-direction 与 flex-wrap 的简写,
+   justify-content: 主轴的对齐方式,
+   algin-items: 交叉轴的对齐方式,
+   align-content: 多根轴线的对齐方式
 
-项目属性:
+2. 项目属性:
 
-    order: 属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
-    flex-grow: 项目的放大比例
-    flex-shrink: 项目的缩小比例
-    flex-basis: 属性定义了在分配多余空间之前，项目占据的主轴空间（main size）
-    flex: flex-grow, flex-shrink, flex-basis的简写
-    align-self: 属性允许单个项目有与其他项目不一样的对齐方式(auto表示继承父类无父类等同于stretch)
+   order: 属性定义项目的排列顺序。数值越小，排列越靠前，默认为 0。
+   flex-grow: 项目的放大比例
+   flex-shrink: 项目的缩小比例
+   flex-basis: 属性定义了在分配多余空间之前，项目占据的主轴空间（main size）
+   flex: flex-grow, flex-shrink, flex-basis 的简写
+   align-self: 属性允许单个项目有与其他项目不一样的对齐方式(auto 表示继承父类无父类等同于 stretch)
 
-## flex: 1
+3. flex: 1 - flex: 1 1 0%
 
-Flex 布局详解（含实例代码）--flex: 1 1 auto；flex: 0 0 auto 是什么意思？
-https://juejin.cn/post/7034314491580022820
+   Flex 布局详解（含实例代码）--flex: 1 1 auto；flex: 0 0 auto 是什么意思？
+   https://juejin.cn/post/7034314491580022820
 
-    首先`flex`属性是`flex-grow`, `flex-shrink`, `flex-basis`的简写形式;
+   首先`flex`属性是`flex-grow`, `flex-shrink`, `flex-basis`的简写形式;
 
-    `flex-grow`: 定义项目的放大比例，即如果子元素未充满父元素，会按照一定的比例放大各个子元素，默认值为0, 按比例放大
+   `flex-grow`: 定义项目的放大比例，即如果子元素未充满父元素，会按照一定的比例放大各个子元素，默认值为 0, 按比例放大
 
-    `flex-shrink`: 定义项目的缩小比例，即如果子元素的宽度超过父元素的宽度，会按照一定的比例缩小子元素，默认值为0， 根据缩减系数和元素大小来计算
+   `flex-shrink`: 定义项目的缩小比例，即如果子元素的宽度超过父元素的宽度，会按照一定的比例缩小子元素，默认值为 0， 根据缩减系数和元素大小来计算
 
-    `flex-basis`: 给上面两个属性分配多余空间之前，计算项目是否有多余空间，默认值为auto,即项目本身的大小
+   `flex-basis`: 表示在不伸缩的情况下自容器的原始尺寸
+   给上面两个属性分配多余空间之前，计算项目是否有多余空间，默认值为 auto,即项目本身的大小
 
-    所以`flex: 1`的完整写法是
-    ```
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0%
-    ```
+   所以`flex: 1`的完整写法是
 
-## flex: auto
+   ```css
+   flex-grow: 1;
+   flex-shrink: 1;
+   flex-basis: 0%; /* 这个百分比的数值会被解析为content*/
+   ```
 
-一文搞懂 flex:0,1,auto,none
-https://juejin.cn/post/7061196914741477383
+4. flex: auto
+
+   一文搞懂 flex:0,1,auto,none
+   https://juejin.cn/post/7061196914741477383
 
 # grid 布局
 
@@ -1540,6 +1520,72 @@ https://juejin.cn/post/6844903814332432397
 # CSS3
 
 # HTML5
+
+# 区别 flex:1 flex:0 flex:auto
+
+- flex 是 flex-grow,flex-shrink,flex-basis 3 个属性结合在一起的缩写形式
+  1. flex: none 表示 flex: 0 0 auto
+  2. flex: 1 表示 flex: 1 1 auto
+  3. flex: auto 表示 flex: 1 1 auto
+
+1. 当 flex 取值为一个非负数字，则该数字为 flex-grow 值，flex-shrink 取 1，flex-basis 取 0%，如下是等同的：
+
+   ```css
+   .item {
+     flex: 1;
+   }
+   .item {
+     flex-grow: 1;
+     flex-shrink: 1;
+     flex-basis: 0%;
+   }
+   ```
+
+2. 当 flex 取值为两个非负数字，则分别视为 flex-grow 和 flex-shrink 的值，flex-basis 取 0%，如下是等同的：
+
+   ```css
+   .item {
+     flex: 2 3;
+   }
+   .item {
+     flex-grow: 2;
+     flex-shrink: 3;
+     flex-basis: 0%;
+   }
+   ```
+
+3. 当 flex 取值为一个长度或者百分比，则视为 flex-basis 值，flex-grow 取 1，flex-shrink 取 1，如下是等同的：
+
+   ```css
+   .item {
+     flex: 0%;
+   }
+   .item {
+     flex-grow: 1;
+     flex-shrink: 1;
+     flex-basis: 0%;
+   }
+   .item {
+     flex: ;
+   }
+   .item {
+     flex-grow: 1;
+     flex-shrink: 1;
+     flex-basis: 0%;
+   }
+   ```
+
+## flex: 1 是什么意思？
+
+CSS 属性 flex 规定了弹性元素如何伸长或缩短以适应 flex 容器中的可用空间。
+flex 属性是 flex-grow,flex-shrink,flex-basis 的缩写，默认值为 0 1 auto
+
+- flex-grow 属性定义项目的放大比例，默认为 0(即如果存在剩余空间，也不放大)
+- flex-shrink 属性定义了项目的缩小比例，默认为 1(即如果空间不足，该项目将缩小)
+  flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据 flex-shrink 的值
+
+- flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间。默认值为 auto，负值不被允许
+  该值的单位可以是 width 单位 px, 也可以是一个相对于其父弹性盒容器主轴尺寸的百分数
 
 # 原知识点
 

@@ -108,28 +108,28 @@ WeakMap WeakSet
 - flat
   按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回
 
-```javascript
-//默认遍历一层
-var arr1 = [1, 2, [3, 4]];
-arr1.flat(); // [1, 2, 3, 4]
+  ```javascript
+  //默认遍历一层
+  var arr1 = [1, 2, [3, 4]];
+  arr1.flat(); // [1, 2, 3, 4]
 
-var arr2 = [1, 2, [3, 4, [5, 6]]];
-arr2.flat(); // [1, 2, 3, 4, [5, 6]]
+  var arr2 = [1, 2, [3, 4, [5, 6]]];
+  arr2.flat(); // [1, 2, 3, 4, [5, 6]]
 
-var arr3 = [1, 2, [3, 4, [5, 6]]];
-arr3.flat(2); // [1, 2, 3, 4, 5, 6]
+  var arr3 = [1, 2, [3, 4, [5, 6]]];
+  arr3.flat(2); // [1, 2, 3, 4, 5, 6]
 
-//使用 Infinity，可展开任意深度的嵌套数组
-var arr4 = [1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]];
-arr4.flat(Infinity); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-```
+  //使用 Infinity，可展开任意深度的嵌套数组
+  var arr4 = [1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]];
+  arr4.flat(Infinity); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  ```
 
-flat()方法会移除数组中的空项
+  flat()方法会移除数组中的空项
 
-```
-var arr4 = [1, 2, , 4, 5];
-arr4.flat();  // [1, 2, 4, 5]
-```
+  ```
+  var arr4 = [1, 2, , 4, 5];
+  arr4.flat();  // [1, 2, 4, 5]
+  ```
 
 - forEach
   对数组的每个元素执行一次给定的函数
@@ -141,11 +141,11 @@ arr4.flat();  // [1, 2, 4, 5]
   `console.log(Array.from([1, 2, 3], x => x + x)); // Array [2, 4, 6]
   可用于 String、Set、Map、类数组对象(arguments)中生成数组
 
-```javascript
-function f() {
-  return Array.from(arguments);
-}
-```
+  ```javascript
+  function f() {
+    return Array.from(arguments);
+  }
+  ```
 
 - includes 判断一个数组是否包含一个指定的值，如果包含则返回 true,否则返回 false
   `includes(valueToFind, fromIndex)`  
@@ -166,25 +166,25 @@ function f() {
 - join
   将一个数组(或一个类数组对象)的所有元素连接成一个字符串并返回这个字符串。
 
-```js
-var a = ["Wind", "Rain", "Fire"];
-var myVar1 = a.join(); // myVar1的值变为"Wind,Rain,Fire"
-var myVar2 = a.join(", "); // myVar2的值变为"Wind, Rain, Fire"
-var myVar3 = a.join(" + "); // myVar3的值变为"Wind + Rain + Fire"
-var myVar4 = a.join(""); // myVar4的值变为"WindRainFire"
-```
+  ```js
+  var a = ["Wind", "Rain", "Fire"];
+  var myVar1 = a.join(); // myVar1的值变为"Wind,Rain,Fire"
+  var myVar2 = a.join(", "); // myVar2的值变为"Wind, Rain, Fire"
+  var myVar3 = a.join(" + "); // myVar3的值变为"Wind + Rain + Fire"
+  var myVar4 = a.join(""); // myVar4的值变为"WindRainFire"
+  ```
 
 - keys
   返回一个包含数组中每个索引键的 Array Iterator 对象
 
-```javascript
-const array1 = ["a", "b", "c"];
-const iterator = array1.keys();
+  ```javascript
+  const array1 = ["a", "b", "c"];
+  const iterator = array1.keys();
 
-for (const key of iterator) {
-  console.log(key); // 0 1 2
-}
-```
+  for (const key of iterator) {
+    console.log(key); // 0 1 2
+  }
+  ```
 
 - map
   创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值
@@ -467,17 +467,17 @@ let s2 = Symbol("bar");
 
 - 基本数据类型除 null 外都转为对应的基本数据类型
 
-```javascript
-typeof 37 === "number";
-typeof Infinity === "number";
-typeof NaN === "number";
+  ```js
+  typeof 37 === "number";
+  typeof Infinity === "number";
+  typeof NaN === "number";
 
-typeof "" === "string";
-typeof true === "boolean";
-typeof Symbol() === "symbol";
-typeof undefined === "undefined";
-typeof 3n === "bigint"; // BigInt类型
-```
+  typeof "" === "string";
+  typeof true === "boolean";
+  typeof Symbol() === "symbol";
+  typeof undefined === "undefined";
+  typeof 3n === "bigint"; // BigInt类型
+  ```
 
 - typeof null // 'object'
   原因: 在 JS 最初的实现中，JS 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0.
@@ -487,63 +487,63 @@ typeof 3n === "bigint"; // BigInt类型
 
 - 除 Function 外的所有构造函数的类型都是'object'，new Function 返回 'function'
 
-```javascript
-var str = new String("String");
-var num = new Number(100);
+  ```js
+  var str = new String("String");
+  var num = new Number(100);
 
-typeof str; // 返回 'object'
-typeof num; // 返回 'object'
+  typeof str; // 返回 'object'
+  typeof num; // 返回 'object'
 
-typeof new Function(); // 返回 'function'
-```
+  typeof new Function(); // 返回 'function'
+  ```
 
 2. instanceof
    只能判断对象是否存在于目标对象的原型链上，不一定能获取对象的具体类型
 
-不适用判断原始类型的值，只能用于判断对象是否从属关系
+   不适用判断原始类型的值，只能用于判断对象是否从属关系
 
-```javascript
-[] instanceof Array; // true
-[] instanceof Object; // true
+   ```javascript
+   [] instanceof Array; // true
+   [] instanceof Object; // true
 
-function Person() {}
-const person = new Person();
+   function Person() {}
+   const person = new Person();
 
-person instanceof Person; // true
-person instanceof Object; // true
-```
+   person instanceof Person; // true
+   person instanceof Object; // true
+   ```
 
 3. constructor
    每一个实例对象都可通过 constructor 来访问它的构造函数
    基本能判断所有类型，除了 null 和 undefined
    undefined 和 null 是无效的对象，因此是没有 constructor 属性的,会报错.
 
-```javascript
-"5".__proto__.constructor === String; // true
+   ```javascript
+   "5".__proto__.constructor === String; // true
 
-undefined.__proto__.constructor; // Cannot read property '__proto__' of undefined
+   undefined.__proto__.constructor; // Cannot read property '__proto__' of undefined
 
-null.__proto__.constructor; // Cannot read property '__proto__' of undefined
-```
+   null.__proto__.constructor; // Cannot read property '__proto__' of undefined
+   ```
 
 4. Object.prototype.toString.call()
    返回对象的类型字符串，可用来判断一个值的类型
 
-```javascript
-Object.prototype.toString.call("5"); // [object String]
-Object.prototype.toString.call(5); // [object Number]
-Object.prototype.toString.call([5]); // [object Array]
-Object.prototype.toString.call(true); // [object Boolean]
-Object.prototype.toString.call(undefined); // [object Undefined]
-Object.prototype.toString.call(null); // [object Null]
-Object.prototype.toString.call(new Function()); // [object Function]
-Object.prototype.toString.call(new Date()); // [object Date]
-Object.prototype.toString.call(new RegExp()); // [object RegExp]
-Object.prototype.toString.call(new Error()); // [object Error]
+   ```js
+   Object.prototype.toString.call("5"); // [object String]
+   Object.prototype.toString.call(5); // [object Number]
+   Object.prototype.toString.call([5]); // [object Array]
+   Object.prototype.toString.call(true); // [object Boolean]
+   Object.prototype.toString.call(undefined); // [object Undefined]
+   Object.prototype.toString.call(null); // [object Null]
+   Object.prototype.toString.call(new Function()); // [object Function]
+   Object.prototype.toString.call(new Date()); // [object Date]
+   Object.prototype.toString.call(new RegExp()); // [object RegExp]
+   Object.prototype.toString.call(new Error()); // [object Error]
 
-class Class1 {}
-Object.prototype.toString.call(new Class1()); // 默认情况类的[[class]]返回[object Object]
-```
+   class Class1 {}
+   Object.prototype.toString.call(new Class1()); // 默认情况类的[[class]]返回[object Object]
+   ```
 
 ## 内部属性[[class]]是什么?
 
