@@ -59,6 +59,7 @@ https://juejin.cn/post/6961222829979697165
     2. $parent/$child
        父实例使用 this.$children访问子实例，
       子实例使用 this.$parent 访问父实例
+
     3. provide/inject
 
        ```js
@@ -1293,15 +1294,15 @@ https://juejin.cn/post/6981628129089421326
 11. sync
     当父组件传值进子组件，子组件想要改变这个值时
 
-父组件里
-`<children :foo="bar" @update:foo="val => bar = val"></children>`
-子组件里
-`this.$emit('update:foo', newValue)`
+    父组件里
+    `<children :foo="bar" @update:foo="val => bar = val"></children>`
+    子组件里
+    `this.$emit('update:foo', newValue)`
 
-父组件里
-`<children :foo.sync="bar"></children>`
-子组件里
-`this.$emit('update:foo', newValue)`
+    父组件里
+    `<children :foo.sync="bar"></children>`
+    子组件里
+    `this.$emit('update:foo', newValue)`
 
 ## v-on 的修饰符使用
 

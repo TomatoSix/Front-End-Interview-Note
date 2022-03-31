@@ -253,7 +253,7 @@ initialValue);
 - includes() 方法用于判断一个字符串是否包含在另一个字符串中，根据情况返回 true 或 false。
 - indexOf() 方法返回调用它的 String 对象中第一次出现的指定值的索引，从 fromIndex 处进行搜索。如果未找到该值，则返回 -1。
 
-# JS 中类型转换有哪几种？
+# JS 中类型转换有哪几种?
 
 - 转换成数字
 - 转换成布尔值
@@ -426,21 +426,22 @@ console.log(obj + 1); // 输出7,  内置的toPrimitive没有的话调用valueOf
 JS 所有数字都保存成 64 位浮点数，有两个限制
 
 1. 数值的精度只能到 53 个二进制位(相当于 16 个十进制位)，超过则无法保持精度
+
 2. 大于或等于 2 的 1024 次方的数值，JS 无法表示，会返回 Infinity
 
-BigInt 只用来表示整数，没有位数的限制，任何位数的整数都可以精确表示
+   BigInt 只用来表示整数，没有位数的限制，任何位数的整数都可以精确表示
 
-- 必须添加后缀 n
-- typeof 运算符对于 BigInt 类型的数据返回 bigint
-- BigInt 与普通整数是两种值，它们之间并不相等 `42n === 42 // false`
-- BigInt 可以转为布尔值、数值和字符串类型
+   - 必须添加后缀 n
+   - typeof 运算符对于 BigInt 类型的数据返回 bigint
+   - BigInt 与普通整数是两种值，它们之间并不相等 `42n === 42 // false`
+   - BigInt 可以转为布尔值、数值和字符串类型
 
-```javascript
-Boolean(0n); // false
-Boolean(1n); // true
-Number(1n); // 1
-String(1n); // "1"
-```
+   ```javascript
+   Boolean(0n); // false
+   Boolean(1n); // true
+   Number(1n); // 1
+   String(1n); // "1"
+   ```
 
 # Symbol 介绍
 
@@ -1445,7 +1446,7 @@ img {
 }
 ```
 
-````html
+```html
 <img
   src="default.jpg"
   data-src="http://ww4.sinaimg.cn/large/006y8mN6gw1fa5obmqrmvj305k05k3yh.jpg"
@@ -1501,13 +1502,15 @@ img {
   data-src="http://ww4.sinaimg.cn/large/006y8mN6gw1fa5obmqrmvj305k05k3yh.jpg"
   alt=""
 />
-```html ```js
+```
+
+```js
 <script>
   var num = document.getElementsByTagName("img").length;
   var img = document.getElementsByTagName("img");
   var n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
 
-  lazyload(); //页面载入完毕加载可是区域内的图片
+  lazyload(); //页面载入完毕加载可视区域内的图片
 
   window.onscroll = lazyload;
 
@@ -1526,31 +1529,31 @@ img {
     }
   }
 </script>
-````
+```
 
 # 数据的双向绑定
 
-```html
-<input type="text" id="input" /> <span id="span"></span>
-```
+    ```html
+    <input type="text" id="input" /> <span id="span"></span>
+    ```
 
-```js
-let obj = {};
-let input = document.getElementById("input");
+    ```js
+    let obj = {};
+    let input = document.getElementById("input");
 
-Object.defineProperty(obj, "content", {
-  get() {
-    console.log("数据更新了");
-  },
-  set(newValue) {
-    input.value = newValue;
-    span.innerHTML = newValue;
-  },
-});
-input.addEventListener("keyup", function (e) {
-  obj.content = e.target.value;
-});
-```
+    Object.defineProperty(obj, "content", {
+      get() {
+        console.log("数据更新了");
+      },
+      set(newValue) {
+        input.value = newValue;
+        span.innerHTML = newValue;
+      },
+    });
+    input.addEventListener("keyup", function (e) {
+      obj.content = e.target.value;
+    });
+    ```
 
 # 正则表达式
 
@@ -1616,15 +1619,16 @@ window > document > html > body
 
    1. 如果设置 `div.setAttribute('color', 'red')`
       产生的效果是 `<div color="red"> </div>`
+
    2. 实际上应该设置`div.setAttribute("style", "color:red");`
       产生的效果是 `<div style="color: red"></div>`
 
-   ```js
-   img.src;
-   div.setAttribute("style", "color:red");
-   input.setAttribute("type", "button");
-   div.removeAttribute("style");
-   ```
+      ```js
+      img.src;
+      div.setAttribute("style", "color:red");
+      input.setAttribute("type", "button");
+      div.removeAttribute("style");
+      ```
 
 3. 修改表单属性
    input.value 用于操作表单里面的值
@@ -1886,12 +1890,12 @@ back()：相当于浏览器的“后退”按钮
    element.offsetWidth 返回自身包括 padding、边框、内容区的宽度，返回数值不带单位
    element.offsetHeight 返回自身包括 padding、边框、内容区的高度，返回数值不带单位
 
-element.offsetParent //返回带有定位的父亲，否则返回 body
-element.parentNode //返回最近一级的父亲
+   element.offsetParent //返回带有定位的父亲，否则返回 body
+   element.parentNode //返回最近一级的父亲
 
 2. 元素可视区 client -获取元素可视区的相关信息
    element.clientTop 返回元素上边框的大小
-   element.clientLeft 返回元素左边框的大小
+   element.clientLeft 返回元素左边框 的大小
    element.clientWidth 返回自身包括 padding、内容区的宽度，不含边框，返回数值不带单位
    element.clientHeight 返回自身包括 padding、内容区的高度，不含边框，返回数值不带单位
 
@@ -2320,14 +2324,14 @@ JS 采用词法作用域(静态作用域),即函数的作用域在函数定义�
 
 ## JavaScript
 
-1.async 和 defer 的区别
-defer 是渲染完再执行 按顺序加载
-async 是下载完就执行 不能保证加载顺序
+1. async 和 defer 的区别
+   defer 是渲染完再执行 按顺序加载
+   async 是下载完就执行 不能保证加载顺序
 
-2.ES6 模块和 CommonJS 模块的差异
-(1)CommonJS 模块输出的是一个值得拷贝，ES6 模块输出的是值的引用
-(2)CommonJS 模块是运行时加载，ES6 模块是编译时输出接口
-(3)CommonJS 模块的 require()是同步加载模块，ES6 模块的 import 命令是异步加载，有一个独立的模块依赖的解析阶段
+2. ES6 模块和 CommonJS 模块的差异
+   (1)CommonJS 模块输出的是一个值得拷贝，ES6 模块输出的是值的引用
+   (2)CommonJS 模块是运行时加载，ES6 模块是编译时输出接口
+   (3)CommonJS 模块的 require()是同步加载模块，ES6 模块的 import 命令是异步加载，有一个独立的模块依赖的解析阶段
 
 ## 闭包
 
