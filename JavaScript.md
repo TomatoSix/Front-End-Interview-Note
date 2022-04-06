@@ -1014,30 +1014,87 @@ https://github.com/LiangJunrong/document-library/blob/master/%E7%B3%BB%E5%88%97-
 
 https://juejin.cn/post/6844904094948130824
 
-## ES6 之前的封装
+1. ES6 之前的封装
 
-1. 私有属性、公有属性、静态属性概念
+   1. 私有属性和方法
+      只能在构造函数内访问，不能被外部所访问(即在构造函数内使用 var 声明的属性)
+   2. 公有属性和方法
+      对象外可以访问到对象内的属性和方法(在构造函数内使用 this 设置，或者设置在构造函数原型对象上)
+   3. 静态属性和方法
+      定义在构造函数的方法(比如 Cat.\*\*\*) 不需要实例就可以调用，实例调用不到
 
-- 私有属性和方法：只能在构造函数内访问，不能被外部所访问(即在构造函数内使用 var 声明的属性)
-- 公有属性和方法：对象外可以访问到对象内的属性和方法(在构造函数内使用 this 设置，或者设置在构造函数原型对象上)
-- 静态属性和方法：定义在构造函数的方法(比如 Cat.\*\*\*) 不需要实例就可以调用，实例调用不到
+   ```js
+   function Cat(name, color) {
+     // var声明的都是私有属性，不能被外部访问
+     var heart = "heart";
+     var heartbeat = function () {
+       console.log(heart + "怦怦跳");
+     };
+     // this定义的是公有属性, 可以被实例访问
+     this.name = name;
+     this.color = color;
+     this.jump = function () {
+       heartbeat();
+       console.log("跳起来了");
+     };
+   }
+   // 设置在原型对象的方法，公有属性
+   Cat.prototype.cleanBoy = function () {
+     console.log("我在清洁身体");
+   };
+   // 静态属性和方法, 直接定义在构造函数上的
+   Cat.description = "我这个构造函数是用来生产出一只猫的";
+   Cat.actingCute = function () {
+     console.log("猫会卖萌");
+   };
 
-## ES6 之后的封装
+   var guaiguai = new Cat("guaiguai", "white");
+   ```
 
-1. class 的基本概念
+2. ES6 之后的封装
 
-- 当使用 class 的时候，它会默认调用 constructor 这个函数,来接收一些参数，并构造出一个新的实例对象并返回
-- 当 class 没有定义 constructor, 也会隐式生成一个 constructor 方法
+   1. class 的基本概念
 
-2. class 中几种定义属性的区别
+      1. 当使用 class 的时候，它会默认调用 constructor 这个函数,来接收一些参数，并构造出一个新的实例对象并返回
+      2. 当 class 没有定义 constructor, 也会隐式生成一个 constructor 方法
 
-- 在 constructor 中 var 一个变量，它只存在于 constructor 这个构造函数中
-- 在 constructor 中使用 this 定义的属性和方法会被定义到实例上
-- 在 class 中使用 = (赋值)来定义一个属性和方法，效果与第二点相同，会被定义到实例上
-- 在 class 中直接定义一个方法,例如 demo()，会被添加到原型对象 prototype 上
-  通过实例调用，该方法中的 this 指向实例对象
-- 在 class 中使用了 static 修饰符定义的属性和方法被认为是静态的，被添加到类本身，不会添加到实例上
-- 类中定义的方法已经在局部开好了严格模式
+   2. class 中几种定义属性的区别
+
+      1. 在 constructor 中 var 一个变量，它只存在于 constructor 这个构造函数中
+      2. 在 constructor 中使用 this 定义的属性和方法会被定义到实例上
+      3. 在 class 中使用 = (赋值)来定义一个属性和方法，效果与第二点相同，会被定义到实例上
+      4. 在 class 中直接定义一个方法,例如 demo()，会被添加到原型对象 prototype 上
+         通过实例调用，该方法中的 this 指向实例对象
+      5. 在 class 中使用了 static 修饰符定义的属性和方法被认为是静态的，被添加到类本身，不会添加到实例上
+      6. 类中定义的方法已经在局部开好了严格模式
+
+      ```js
+      class Cat {
+        constructor() {
+          // var 定义的变量的constructor的内部变量
+          var type = "cons";
+          // this定义的属性和方法会被定义到实例上
+          this.name = "six";
+          this.getMessage = function () {
+            console.log(this.name, type);
+          };
+        }
+        // 静态属性和方法，会添加到类身上
+        static description = "这个类是用来生产猫的";
+        static actingCute = function () {
+          console.log("猫在卖萌");
+        };
+        // 直接被定义到实例上
+        name = "cat";
+        getName = function () {
+          console.log(this.name);
+        };
+        // 直接被定义到原型对象上
+        hide() {
+          console.log("猫猫躲起来了");
+        }
+      }
+      ```
 
 # 继承的实现方式与比较
 
@@ -1047,47 +1104,47 @@ https://juejin.cn/post/6844904098941108232
    `Child.prototype = new Parent()`
 2. 构造继承 - 在子类构造函数内部使用 call 或 apply 来调用父类构造函数
 
-```js
-function Child() {
-  Parent.call(this, ...arguments);
-}
-```
+   ```js
+   function Child() {
+     Parent.call(this, ...arguments);
+   }
+   ```
 
 3. 组合继承
 
-```js
-function Child() {
-  Parent.call(this, ...arguments);
-}
-Child.prototype = new parent();
-Child.prototype.constructor = Child;
-```
+   ```js
+   function Child() {
+     Parent.call(this, ...arguments);
+   }
+   Child.prototype = new parent();
+   Child.prototype.constructor = Child;
+   ```
 
 4. 寄生组合继承
 
-```js
-// 构造继承
-function Child() {
-  Parent.call(this, ...arguments);
-}
-// 原型式继承
-Child.prototype = Object.create(Parent.prototype);
-// 修正constructor
-Child.prototype.constructor = Child;
-```
+   ```js
+   // 构造继承
+   function Child() {
+     Parent.call(this, ...arguments);
+   }
+   // 原型式继承
+   Child.prototype = Object.create(Parent.prototype);
+   // 修正constructor
+   Child.prototype.constructor = Child;
+   ```
 
 5. 原型式继承
 6. 寄生继承
 7. 混入式继承
 8. class 中的 extends 继承
 
-```js
-class Child extends Parent {
-  constructor(...args) {
-    super(...args);
-  }
-}
-```
+   ```js
+   class Child extends Parent {
+     constructor(...args) {
+       super(...args);
+     }
+   }
+   ```
 
 # 深拷贝与浅拷贝
 
@@ -2272,505 +2329,6 @@ https://github.com/LiangJunrong/document-library/tree/master/%E7%B3%BB%E5%88%97-
 
 4. toString 返回一个表示该对象的字符串
 
-# 原内容
-
-## 作用域
-
-概念--指程序源代码中定义变量的区域
-作用域规定了如何查找变量，也就是确定当前执行代码对变量的访问权限
-JS 采用词法作用域(静态作用域),即函数的作用域在函数定义的时候就决定了
-
-## let 和 const 命令
-
-1. 暂时性死区
-   在代码块内，使用 let 命令声明变量之前，该变量都是不可用的，会报错。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）
-2. const
-   const 实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址所保存的数据不得改动
-
-   对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量
-
-   对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指向实际数据的指针，const 只能保证这个指针是固定的（即总是指向另一个固定的地址），至于它指向的数据结构是不是可变的，就完全不能控制了
-
-   总结：const 声明不允许修改绑定，但允许修改值
-
-## 块级作用域
-
-1. 为什么需要块级作用域？ 1)内层变量可能会覆盖外层变量
-
-   ```
-   var tmp = new Date();
-
-   function f() {
-     console.log(tmp);
-     if (false) {
-       var tmp = 'hello world';
-     }
-   }
-
-   f(); // undefined
-   ```
-
-   2)用来计数的循环变量泄露为全局变量
-
-   ```js
-   var s = "hello";
-   for (var i = 0; i < s.length; i++) {
-     console.log(s[i]); // h e l l o
-   }
-   console.log(i); // 5 全局范围都可以读到
-   ```
-
-2.块级作用域存在于函数内部和块中{ }之间的区间
-
-## JavaScript
-
-1. async 和 defer 的区别
-   defer 是渲染完再执行 按顺序加载
-   async 是下载完就执行 不能保证加载顺序
-
-2. ES6 模块和 CommonJS 模块的差异
-   (1)CommonJS 模块输出的是一个值得拷贝，ES6 模块输出的是值的引用
-   (2)CommonJS 模块是运行时加载，ES6 模块是编译时输出接口
-   (3)CommonJS 模块的 require()是同步加载模块，ES6 模块的 import 命令是异步加载，有一个独立的模块依赖的解析阶段
-
-## 闭包
-
-概念：指有权访问另一个函数作用域中的变量的函数
-优点：
-缺点：导致内存泄漏
-应用：定义模块，将操作函数暴露给外部，而细节隐藏在模块内部
-
-## 单例、工厂设计模式
-
-单例模式：
-概念--基于对象数据类型，把描述当前事务的属性和方法统一放在一起分组管理，能够减少全局变量污染
-var obj={} 就是标准的单例模式
-例如：
-
-```js
-var person1={
-  name:'张三',
-  age:25,
-  ...
-};
-
-var person2={
-  name:'李四',
-  age:28,
-  ...
-};
-```
-
-特点 1.每一个对象都是一个单独的实例（单独的堆内存），存储的键值对都是堆中私有的内容，所以两个实例之间不会有任何的冲突
-
-工厂设计模式：
-概念--是在需要创建很多“相似实例”的情境下，让我们告别手动创建，而实现工业化批量生产（根据这句话让我们想到=>提高开发效率、减少了页面中的冗余代码 => “低耦合高内聚” => 函数封装）
-
-## 基础
-
-1.  JS 的数据类型
-
-    JS 一共有 6 种基本数据类型分别是`undefined`, `null`, `boolean`, `number`, `string`, `symbol`, 引用数据类型`object`, `array`, `function`
-
-    `symbol`作用: 定义一个独一无二的值
-
-    基本类型是保存在栈内存中的简单数据段，它们的值都有固定的大小，保存在栈空间，通过按值访问
-
-    引用类型是保存在堆内存中的对象，值大小不固定，栈内存中存放的该对象的访问地址指向堆内存中的对象，JavaScript 不允许直接访问堆内存中的位置，因此操作对象时，实际操作对象的引用
-
-2.  string 是个基本数据类型，为什么可以使用 String 的一些方法
-
-    除去 Object, Array 等引用类型，JavaScript 还提供了三种特殊的引用类型: String, Number 和 Boolean，方便我们操作对应的基本类型，所以在调用 String 方法时，并不是基本数据类型 stirng 执行了自身方法，而是后台为它创建了一个对应的基本包装类型 String，它根据基本类型的值实例化了一个实例，让这个实例去调用指定的方法，最后销毁这个实例
-
-3.  `var`, `let`, `const`的区别
-
-    `var`声明的变量没有块级作用域而`let`声明的变量拥有块级作用域，`const`声明的是常量，声明之后无法对其进行修改， `const`保证的实际上并不是变量的值不得改变，而是变量指向的那个内存地址不得改动，对于复合类型的数据如对象，数组，变量指向的内存地址保存的只是一个指向实际数据的指针，`const`只能保证这个指针是固定的
-
-    在代码块内，使用 let 命令声明变量之前，该变量都是不可用的，在语法上称为暂时性死区
-
-4.  `==`, `===`, `Object.is`的区别
-
-    `==`: 会进行强制的类型转换,在转换类型后，二者相等也会返回 True,而`===`不会进行转换, `Object.is`也不会进行强制类型转换，但与`===`不同的是，`+0===0`, `Object.is(+0, -0) false`, `Nan !== Nan, Object.is(Nan, Nan) false`
-
-    如果 Type(x)和 Type(y)相同，返回 x===y 的结果
-    如果 Type(x)和 Type(y)不同
-    如果 x 是 null，y 是 undefined，返回 true
-    如果 x 是 undefined，y 是 null，返回 true
-    如果 Type(x)是 Number，Type(y)是 String，返回 x==ToNumber(y) 的结果
-    如果 Type(x)是 String，Type(y)是 Number，返回 ToNumber(x)==y 的结果
-    如果 Type(x)是 Boolean，返回 ToNumber(x)==y 的结果
-    如果 Type(y)是 Boolean，返回 x==ToNumber(y) 的结果
-    如果 Type(x)是 String 或 Number 或 Symbol 中的一种并且 Type(y)是 Object，返回 x==ToPrimitive(y) 的结果
-    如果 Type(x)是 Object 并且 Type(y)是 String 或 Number 或 Symbol 中的一种，返回 ToPrimitive(x)==y 的结果
-    其他返回 false
-
-5.  `slice()`和`splice()`的区别
-
-    `slice`: 只能截取数组中的一段，且截取后原数据不会发生变化;
-
-    `splice`: 不仅仅能够截取数组中的一段，还能够在原数组中进行替换
-
-6.  `push()`, `pop()`, `shift()`和`unshift()`
-
-    (1). `push`, `pop`:类似于栈的行为，后进先出
-
-    (2). `shift`, `unshift`: 类似于队列的行为, 先进先出
-
-    数组方法
-
-        (1). 修改器方法
-
-            push, pop, unshift, shift, sort, reverse, splice
-
-        (2). 访问方法 (返回新的数组)
-
-            concat, slice
-
-        (3). 迭代方法
-
-            forEach, filter, map, reduce
-
-7.  `map`和`set`
-
-    map 是一组键值对的结构，具有极快的查找速度
-
-    set 和 map 类似，也是一组 key 的集合，但不储存 value，在 set 中，key 不可重复
-
-    现在，如果我们在 weakMap 中使用一个对象作为键，并且没有其他对这个对象的引用 —— 该对象将会被从内存（和 map）中自动清除。
-
-8.  箭头函数与普通函数的区别
-
-    (1). 箭头函数不会创建自己的`this`只会从自己的作用链上一层继承`this`;
-
-    (2). 箭头函数继承而来的`this`指向永远不变所以`.call()/.apply()/.bind()`无法改变箭头函数中`this`的指向;
-
-    (3). 箭头函数不能作为构造函数使用; **从关键字 new 的角度去回答，this 的指向会发生改变**
-
-    (4). 箭头函数没有自己的`arguments`;
-
-    (5). 箭头函数没有原型`prototype`
-
-9.  CommonJS 和 ES6 模块的区别
-
-    (1). CommonJS 输出的是一个值的拷贝，ES6 模块输出的是值的引用，换句话说就是 CommonJS 在模块内部发生的后续变化影响不了外部对这个值的使用;
-
-    (2). CommonJS 模块是运行时加载，ES6 模块是编译时输出接口;
-
-    (3). CommonJS 顶层`this`指向当前模块, 而在 ES6 模块中`this`指向`undefined`
-
-10. `innerHtml`, `innerText`, `outerHtml`
-
-    `innerHtml`: 是指从对象的起始位置到终止位置的全部内容包括 html 标签
-
-    `innerText`: 从起始位置到终止位置的内容，不包括 html 标签
-
-    `outerHtml`: 除了包含`innerHtml`全部内容外还包含了对象标签本身
-
-    **火狐浏览器不支持`innerText`**
-
-11. 怎么判断是数组
-
-    (1). `instanceof`; (2). `constructor` `arr.constructor === Array`; (3). `toString` example: `Object.prototype.toString.call(arr) === '[object Array]';`; (4). `Array.isArray(arr)`
-
-12. 数组拷贝
-
-    浅拷贝: 直接将数组引用复制的方法是浅拷贝
-
-    深拷贝: 递归复制了所有层级 `JSON.parse(JSON.stringify(arr));` `slice和concat在多维数组中无效`
-
-13. Event Loop
-
-    为了解决异步任务，js 最大的特点是单线程，非阻塞，当在执行栈中有一个异步任务的时候，js 不会一直等待其返回结果，而是将这个事件挂起，继续执行执行栈中接下来的任务，当异步任务返回结果后，js 会将结果插入到事件队列中，并不会立即回调，当执行栈中任务执行完成之后，会取出事件队列中第一位的事件，放入执行栈中继续执行，如此反复，就形成了一个循环，这个过程就是 Event Loop
-
-    浏览器环境下，microtask 的任务队列是每个 macrotask 执行完之后执行。而在 Node.js 中，microtask 会在事件循环的各个阶段之间执行，也就是一个阶段执行完毕，就会去执行 microtask 队列的任务。
-
-    主代码执行，将 2 个 定时器 依次放入 I/O 任务队列最后进入 timer 队列，主代码执行完毕，调用栈空闲，开始进行事件循环首先进入 timers 阶段，执行 timer1 的回调函数，打印 timer1，并将 promise1.then 回调放入 microtask 队列，同样的步骤执行 timer2，打印 timer2；至此，timer 阶段执行结束，event loop 进入下一个阶段之前，执行 microtask 队列的所有任务，依次打印 promise1、promise2。
-
-    而 node11 之后，node 在 setTimeOut 执行后会手动清空微任务队列，以保证结果贴近浏览器。
-
-14. 浏览器事件机制
-
-    浏览器事件机制中事件触发的三个阶段: 事件捕获 - 事件目标函数处理 - 事件冒泡
-
-    冒泡: 事件会从最内层元素发生，一直向外传播直到 document 对象
-
-    捕获: 与冒泡相反，事件从最外层开始发生直到最具体的元素
-
-    当某个元素触发某个事件（如：click），顶级对象 document 发出一个事件流，顺着 dom 的树节点向触发它的目标节点流去，直到达到目标元素，这个层层递进，向下找目标的过程为事件的捕获阶段，此过程与事件相应的函数是不会触发的。
-
-    到达目标函数，便会执行绑定在此元素上的，与事件相应的函数，即事件目标处理函数阶段。
-
-    最后，从目标元素起，再依次往顶层元素对象传递，途中如果有节点绑定了同名事件，这些事件所对应的函数，在此过程中便称之为事件冒泡。
-
-    通常情况下，事件相应的函数是在冒泡阶段执行的。addEventListener 的第三个参数默认为 false，表示冒泡阶段执行（为 true 的时候，表示捕获阶段执行）。
-
-15. `onclick`和`addEventListener`的区别
-
-    `on`: 不可以多次绑定同一事件
-
-    `addEventListener`: 可以多次绑定同一事件，并且并不会覆盖上一个事件
-
-    1.onclick 事件在同一时间只能指向唯一对象
-
-    2.addEventListener 给一个事件注册多个 listener
-
-    3.addEventListener 对任何 DOM 都是有效的，而 onclick 仅限于 HTML
-
-    4.addEventListener 可以控制 listener 的触发阶段，（捕获/冒泡）。对于多个相同的事件处理器，不会重复触发，不需要手动使用 removeEventListener 清除
-
-16. 闭包
-
-    闭包就是能够读取其他函数内部变量的函数，本质上闭包就是函数内部与函数外部的一座桥梁
-
-17. `promise`与`async/await`
-
-    Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）和 rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态
-
-    一旦状态改变，就不会再变，任何时候都可以得到这个结果。Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled 和从 pending 变为 rejected。只要这两种情况发生，状态就凝固了，不会再变了
-
-    说到底，Promise 也还是使用回调函数，只不过是把回调封装在了内部，使用上一直通过 then 方法的链式调用，使得多层的回调嵌套看起来变成了同一层的，书写上以及理解上会更直观和简洁一些。
-
-    promise 可解决回调地狱的问题
-
-    (1). `promise`是 ES6 的语法，`async/await`是 ES7 的语法;
-
-    (2). `promise`的错误可以通过 catch 来捕捉，而`async/await`的错误用`try-catch`来捕捉，因为`await`只会返回`promise`成功的值;
-
-    async 与 generator
-
-    async 相当于自执行的 generator 函数，相当于自带一个状态机，在 await 的部分等待即过，返回后自动执行下一步
-
-18. JS 为什么要区分 Microtask 和 Marcotask
-
-    区分微任务和宏任务是为了将异步队列任务划分优先级，通俗的理解就是为了插队。
-
-    一个 Event Loop，微任务是在宏任务之后调用，微任务会在下一个 Event Loop 之前执行调用完，并且其中会将微任务执行当中新注册的微任务一并调用执行完，然后才开始下一次 Event Loop，所以如果有新的宏任务 就需要一直等待，等到上一个 Event Loop 当中 微任务被清空为止。由此可见，我们可以在下一次 Event Loop 之前进行插队。
-
-    如果不区分微任务和宏任务那就无法在下一次 Event Loop 之前进行插队，其中新注册的任务得等到下一个宏任务完成之后才能进行，这中间可能你需要的状态就无法在下一个宏任务中得到同步。
-
-19. ES6 相比于 ES5 的特性
-
-    (1). 关键字`let` - 块级作用域 `const` - 常量;
-
-    (2). 箭头函数;
-
-    (3). 解构赋值;
-
-    (4). class 只是一个语法糖，并不能代表 javascript 是一个面向对象的编程语言;
-
-    (5). `map`, `set`, `WeakMap`, `WeakSet` ;
-
-        `WeakMap`, `WeakSet`作为属性键的对象如果没有别的变量引用他们，则会被回收释放掉
-
-    (6). 扩展运算符(相当于`rest`的逆运算);
-
-20. 防抖和节流
-
-    防抖: 当你频繁触发后，n 秒内只执行一次, 如果 n 秒内有被触发，则重新计时
-
-    ```
-    function debounce(fn) {
-        let timeout = null
-        return function (){
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                fn.apply(this, arguments)
-            }, 500)
-        }
-    }
-    ```
-
-    应用场景: (1).搜索框搜索输入，只需用户最后一次输入完，再发送请求; (2). 手机号，邮箱验证输入检测; (3). 窗口大小 Resize，只需窗口调整完成后，计算窗口大小，防止重复渲染;
-
-    节流: 在固定的时间内触发事件，每隔 n 秒触发一次
-
-    ```
-    function throttle(fn, delay) {
-        let canRun = true // 通过闭包保存一个标记
-        return function () {
-            if (!canRun) return; // 在函数开头判断标记是否为true，不为true则return
-            canRun = false // 立即设置为false
-            setTimeout(() => {
-                fn.appny(this, arguments)
-                canRun = true;
-            }, delay)
-        }
-
-    }
-    ```
-
-    应用场景: (1). 滚动加载，加载更多或滚到底部监听; (2). 谷歌搜索框，搜索联想功能; (3). 高频点击提交，表单重复提交;
-
-21. js 中 0.1+0.2 为什么不等于 0.3,怎么解决
-
-    计算机是用二进制储存数的，而十进制小数转二进制的方法是用 2 去乘小数部分，这会导致小数不能精确的表达所以当两个小数相加时，很有可能产生误差
-
-    解决方法是可以将数组转为整数先进行加法再除以他们放大的倍数或者利用第三方库
-
-22. map, forEach
-
-    map 和 forEach 的区别:
-
-        forEach()方法不会返回执行结果，也就是说forEach会修改原来的数组
-
-        map()会得到一个新的数组并返回，不会修改原来的数组 (声明一个新的变量来储存map的结果而不是去修改原数组)
-
-        ```
-        let arr = [
-          {
-            a: 1,
-            b: 2
-          },
-          {
-            a: 3,
-            b: 4
-          }
-        ]
-
-        const arr1 = arr.map(item => (
-          {
-            ...item,
-            b: 5
-          }
-        ))
-
-
-        const arr2 = arr.map(item => {
-          item.b = 5
-          return item
-        })
-        console.log(arr);
-        console.log(arr1);
-        console.log(arr2);
-
-        ```
-
-23. js 获取，更新，添加，删除 dom 操作
-
-    ```
-    // 获取
-    document.getElementById() // 获取唯一的节点
-    document.getElementsByTagName ();
-    document.getElementsByClassName(); // 都是获取一组节点
-    document.querySelector() // 返回文档中匹配指定CSS选择器的第一个元素
-    document.querySelectorAll()
-
-
-
-    // 更新
-    // 修改节点的文本 innerHTML和innerText
-
-    // 插入
-    parentElement.appendChild(newElement) // 插入到最后
-    parentElement.insertBefore(newElement, referenceElement)
-
-    // 删除
-    parentElement.removeChild(deleteElement)
-    ```
-
-24. js 垃圾回收机制
-
-    (1). 标记清理 在垃圾程序运行的时候，会标记内存中存储的所有变量然后，它会将所有在上下文中的变量，以及被在上下文中的变量引用的变量的标记去掉，在此之后再被加上标记的变量就是待删除的了，原因是任何在上下文中的变量都访问不到它们了。随后垃圾回收程序做一次内存清理，销毁带标记的所有值并收回它们的内存 ;
-    (2). 引用计数 对每个值都记录它被引用的次数，声明变量并给它赋一个引用值时，这个值的引用数为 1。如果同一个值又被赋给另一个变量，那么引用数加 1，类似地，如果保存对该值引用的变量被其他值给覆盖了，那么引用数减 1.当一个值的引用数为 0 时，就说明没发再访问这个值了，因此可以安全地收回其内存了。垃圾回收程序下次运行的时候就会释放引用数为 0 的值的内存;
-
-    垃圾回收算法: (1). 标记空间中可达的值; (2). 回收不可达的值所占据的内存; (3). 做内存整理;
-
-    分代收集:
-
-        (1). 浏览器将数据分为两种，一种是临时对象，一种是长久对象;
-        (2). 临时对象: 函数内部声明的变量，块级作用域中的变量; 长久对象: 生命周期很长的对象，比如全局的window，DOM
-        (3). 两种不同的对象对应不同的回收策略，V8把堆分成新生代和老生代两个区域，新生代中存放临时对象，老生代中存放持久对象并且让副垃圾回收器，主垃圾回收器分别负责新生代和老生代的垃圾回收，这样就可以高效的垃圾回收
-        (4). 主垃圾回收器: 负责老生代的垃圾回收，有两个特点: 对象占用空间大，对象存活时间长。它使用标记清除的算法执行垃圾回收。在遍历的过程中，能到达的元素称为活动对象，没有到达的元素就可以判断为垃圾数据，然后是垃圾清除，直接将标记为垃圾的数据清理掉，这样会产生大量的不连续的内存碎片，需要进行内存整理
-        (5). 副垃圾回收器: 负责新生代的垃圾回收，通常只支持1-8M的容量，新生代被分为两个区域：一般是对象区域，一半是空闲区域。
-        新加入的对象都被放入对象区域，等对象区域快满的时候，会执行一次垃圾清理。先给对象区域所有垃圾做标记；标记完成后，存活的对象被复制到空闲区域，并且将他们有序的排列一遍；
-        这就回到我们前面留下的问题 -- 副垃圾回收器没有碎片整理。因为空闲区域里此时是有序的，没有碎片，也就不需要整理了；复制完成后，对象区域会和空闲区域进行对调。将空闲区域中存活的对象放入对象区域里。这样，就完成了垃圾回收。因为副垃圾回收器操作比较频繁，所以为了执行效率，一般新生区的空间会被设置得比较小。一旦检测到空间装满了，就执行垃圾回收。
-
-25. JS 如何解决单线程
-
-    浏览器的主要线程包括：UI 渲染线程，JS 主线程，GUI 事件触发线程，http 请求线程
-    JS 作为脚本语言，它的主要用途是与用户互动，以及操作 DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。（这里这些问题我们不做研究）
-
-    其实 JS 为我们提供了一个 Worker 的类，它的作用就是为了解决这种阻塞的现象。当我们使用这个类的时候，它就会向浏览器申请一个新的线程。这个线程就用来单独执行一个 js 文件。
-
-    当然，在主线程中有一些方法来实现对新线程的控制和数据的接收。
-
-    在新线程中使用 postMessage()方法可以向主线程中发送一些数据，主线程中使用 worker 的 onmessage 事件来接收这些数据，这样就实现了 js 的多线程执行和多线程之间数据的传递。
-
-26. 类数组与数组的转换
-
-    类数组是一个普通对象，而真实的数组是 Array 类型。
-
-    常见的类数组有: 函数的参数 arguments, DOM 对象列表(比如通过 document.querySelectorAll 得到的列表), jQuery 对象 (比如 $(“div”)).
-
-    1）拥有 length 属性，其它属性（索引）为非负整数（对象中的索引会被当做字符串来处理）;
-
-    2）不具有数组所具有的方法；
-
-    (1). `Array.prototype.slice.call(arraylike, start)`;
-    (2). `[...arraylike]`;
-    (3). `Array.from(arraylike)`;
-
-27. 作用域和作用域链和执行上下文
-
-    每个上下文都有一个关联的变量对象，而在这个上下文当中定义的所有变量和函数都存在于这个对象上，上下文在其中所有的代码都执行完毕后会被销毁，包括定义在其中的所有变量和函数，所以上下文决定了它们可以访问哪些数据，上下文可以通过作用域链访问外部上下文中的一切，但外部上下文无法访问内部上下文中的任何东西(执行上下文栈 后入先出)
-
-    上下文中的代码在执行的时候，会创建变量对象的作用域链，这个作用域链决定了各级上下文中的代码在访问变量和函数的顺序
-
-    变量提升，var 的变量提升和函数的变量提升
-
-28. BOM 属性和方法
-
-29. 内存管理
-
-    优化内存的最佳手段就是保证内存在执行代码时只保存必要的数据，如果数据不再必要，那么把它设置为 null，从而释放其引用
-
-    通过 const 和 let 声明提升性能(块作用域)
-
-    内存泄漏
-
-        大部分原因是由不合理的引用导致的
-
-        (1). 函数作用域内意外声明全局变量
-        (2). 不清理定时器
-        (3). 闭包
-
-30. JS 为什么是单线程？
-
-    JavaScript 的单线程，与它的用途有关。作为浏览器脚本语言，JavaScript 的主要用途是与用户互动，以及操作 DOM。这决定了它只能是单线程，否则会带来很复杂的同步问题。比如，假定 JavaScript 同时有两个线程，一个线程在某个 DOM 节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？
-
-31. 事件委托
-
-    事件委托其实就是利用 JS 事件冒泡机制把原本需要绑定在子元素的响应事件（click、keydown……）委托给父元素，让父元素担当事件监听的职务。事件代理的原理是 DOM 元素的事件冒泡。
-
-    优点: 大量减少内存占用，减少事件注册。新增元素实现动态绑定事件
-
-    ```
-    <ul id="color-list">
-        <li>red</li>
-        <li>yellow</li>
-        <li>blue</li>
-        <li>green</li>
-        <li>black</li>
-        <li>white</li>
-      </ul>
-      <script>
-        (function () {
-          var color_list = document.getElementByid('color-list');
-          color_list.addEventListener('click', showColor, true);
-          function showColor(e) {
-            var x = e.target;
-            if (x.nodeName.toLowerCase() === 'li') {
-              alert(x.innerHTML);
-            }
-          }
-        })();
-      </script>
-    ```
-
-32. 为什么 for...of...不能遍历对象
-
-    因为能够被 for...of 正常遍历的，都需要实现一个遍历器 Iterator。而数组、字符串、Set、Map 结构，早就内置好了 Iterator（迭代器），它们的原型中都有一个 Symbol.iterator 方法，而 Object 对象并没有实现这个接口，使得它无法被 for...of 遍历
-
 ## 代码
 
 1. 代码输出
@@ -2849,7 +2407,7 @@ var person2={
 
 4. 作用域问题
 
-   ```
+   ```js
    // shoppe
    function(){
        var x = y = 1;
