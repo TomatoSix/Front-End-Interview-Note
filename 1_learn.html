@@ -1,23 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <span></span>
-  <div>
-    <div></div>
-    <span></span>
-    <div class="container">1111</div>
-    <div class="container">1222</div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>        
+      html *{            
+          padding: 0;            
+          margin: 0;        
+      }        
+      #sec{            
+          background: #f00;            
+          /* overflow: hidden;  */
+      }        
+      .child{            
+          height: 100px;            
+          margin-top: 10px;            
+          background: yellow;    
+          font-size: 6px;    
+          -webkit-text-size-adjust: none;
+      }    
+  </style>
   
-  <script>
-    // 单例模式
-    
-  </script>
-</body>
+  
+  </head>
+  <body>
+    <section id="sec">        
+      <article class="child">1111111</article>    
+    </section>
+    <script>
+      let arr = [1,9,2,8,3,7,4,6,5]
+      // 冒泡排序 n*n
+      function bubbleSort(arr) {
+        let len = arr.length
+        for (let i=0; i<len-1; i++) {
+          for (let j=0; j<len; j++) {
+            if (arr[j+1] < arr[j]) {
+              [arr[j], arr[j+1]] = [arr[j+1], arr[j]]
+            }
+          }
+        }
+        return arr
+      }
+      // 快速排序 nlogn
+      function quickSort(arr) {
+        if (arr.length < 2) return arr
+        let pivot = arr[arr.length-1]
+        let left = arr.filter((item, index) => item < pivot && index !== arr.length-1)
+        let right = arr.filter(item => item > pivot)
+        return [...quickSort(left), pivot, ...quickSort(right)]
+      }
+      // 插入排序 n*n
+      function insertSort(arr) {
+        let len = arr.length
+        for (let i=1; i<len; i++) {
+          let curValue = arr[i]
+          let j=i-1
+          while (j>=0 && arr[j] > curValue) {
+            arr[j+1] = arr[j]
+            j-- 
+          }
+          arr[j+1] = curValue
+        }
+        return arr
+      }
+      // 归并排序
+      function unionSort(arr) {
+        if (arr.length < 2) return arr
+        let m = Math.floor(arr.length/2)
+        let left = unionSort(arr.slice(0, m))
+        let right = unionSort(arr.slice(m))
+        return union(left, right)
+      }
+      function union(left, right) {
+        let res = []
+        let i=0, j=0
+        while (i<left.length && j<right.length) {
+          if (left[i] < right[j]) {
+            res.push(left[i])
+            i++
+          } else {
+            res.push(right[j])
+            j++
+          }
+        }
+        if (i < left.length) {
+          res.push(...left.slice(i))
+        }
+        if (j < right.length) {
+          res.push(...right.slice(j))
+        }
+        return res
+      }
+      // 选择排序
+      function selectSort(arr) {
+        let len = arr.length
+        for (let i=0; i<len-1; i++) {
+          let minIndex = i
+          for (let j=i+1; j<len; j++) {
+            if (arr[minIndex] > arr[j]) {
+              minIndex = j
+            }
+          }
+          [arr[minIndex], arr[i]] = [arr[i], arr[minIndex]]
+        }
+        return arr
+      }
+
+      let res = unionSort(arr)
+      console.log(res, 'unionSort');
+    </script>
+  </body>
 </html>
+

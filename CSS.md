@@ -2,6 +2,8 @@
 
 `浏览器 CSS 匹配不是从左到右进行查找，而是从右到左进行查找，这是为了尽早过滤掉一些无关的样式规则和元素`
 
+# 知识点
+
 # css 引入方式
 
 1. 行内样式: 在网页上通过 style=""属性直接写样式
@@ -48,23 +50,6 @@
 -moz- firefox
 -ms- ie
 -o- opera
-
-# CSS 盒模型
-
-页面上任何一个元素我们都可以看成是一个盒子，盒子会占用一定的空间和位置，他们之间相互制约，就形成了网页的布局
-
-盒模型由四个部分构成: content, border, padding, margin
-
-W3C 标准盒模型 属性 width,height 只包含内容 content
-IE 盒模型(怪异盒模型) 属性 width,height = content + padding + border
-
-```css
-/*
-当设置为box-sizing: content-box时， 将采用标准模式解析计算，也是默认模式；
-当设置为box-sizing: border-box时，将采用IE盒模式解析计算
-*/
-box-sizing: content-box || border-box || inherit;
-```
 
 # 有哪些选择器？
 
@@ -191,62 +176,25 @@ vw/vh: 相对于 viewport 相对视口的宽度和高度而定的
 
 # 可以继承的属性
 
-(1) 字体系列属性
-font、font-family、font-weight、font-size、font-style、font-variant、font-stretch、font-size-adjust
-(2) 文本系列属性
-text-indent、text-align、text-shadow、line-height、word-spacing、letter-spacing、text-transform、direction、color
-(3) 表格布局属性
-caption-side border-collapse empty-cells
-(4) 列表属性
-list-style-type、list-style-image、list-style-position、list-style
-(5) 光标属性
-cursor
-(6) 元素可见性
-visibility
+1. 字体系列属性
+   font、font-family、font-weight、font-size、font-style、font-variant、font-stretch、font-size-adjust
+2. 文本系列属性
+   text-indent、text-align、text-shadow、line-height、word-spacing、letter-spacing、text-transform、direction、color
+3. 表格布局属性
+   caption-side border-collapse empty-cells
+4. 列表属性
+   list-style-type、list-style-image、list-style-position、list-style
+5. 光标属性
+   cursor
+6. 元素可见性
+   visibility
 
-5. CSS 实现 0.5px
+7. CSS 实现 0.5px
 
 (1). 缩放
 先画一条 1px 的线，再通过 transfrom scaleY(0.5)
 
 (2). 更改 meta 标签的 viewport
-
-5. CSS 样式的引入 | @import 与 link 的区别
-
-`link`是 html 方式, `@import`是 css 方式
-
-`link`最大限度支持并行下载，`@import`过多嵌套导致串行下载，出现 FOUC(白屏)
-
-# display `block`, `inline`, `inline-block` | 块元素、行内元素与行内块元素的区别
-
-`block`元素: `div`, `form`, `table`, `p`, `pre`, `h1~h6`, `dl`, `ol`, `ul`;
-
-`inline`元素: `span`, `a`, `strong`, `em`, `label`, `input`, `select`, `textarea`, `img`, `br`
-
-`display: block`
-
-(1).block 元素会独占一行，多个 block 元素会各自新起一行; (2). block 元素可以设置 width, height， 不设置的时候, 会继承父元素的宽度; (3). block 元素可以设置 margin 和 padding
-
-`display: inline`
-
-(1). inline 元素不会独占一行，多个相邻的行内元素会排列在同一行，直到一行排列不下，才会新换一行，其宽度随元素的内容而变化; (2). inline 元素设置 width, height 属性无效; (3). inline 元素只能产生水平方向的边距效果(margin, padding),竖直方向无效
-
-`display: inline-block`
-
-简单的来说就是将对象呈现`inline`对象，但是对象的内容作为`block`对象呈现。之后内联对象会被排列在同一行内。比如我们可以给一个 link`a`元素`inline-block`属性值，使其既具有 block 宽度高度特性又具有`inline`的同行特性
-
-7. `display: none`与`visibility: hidden`的区别
-
-联系: 他们都能让元素不可见
-
-区别:
-(1). `display: none`会让元素完全从 dom 树中消失，渲染的时候不占据任何空间;`visibility: hidden`不会让元素从渲染树消失，元素仍然会占据空间，只是内容不可见
-
-(2). `display: none`是非继承属性，子孙节点消失是由于元素从 dom 树消失造成的，通过修改子孙节点属性无法显示, `visibility: hidden`是继承属性，子孙节点消失由于继承了`hidden`通过设置`visibility: visible`可以让子孙节点显示;
-
-(3). 修改常规元素的`display`通常会造成文档重排。修改`visibility`属性只会造成本元素的重绘
-
-opacity：0 则仅仅不可见，但仍可被浏览器发现，也就能触发各种事件。通过浏览器调试工具即可得出此结论。
 
 # flex 布局
 
@@ -268,33 +216,6 @@ opacity：0 则仅仅不可见，但仍可被浏览器发现，也就能触发�
    flex: flex-grow, flex-shrink, flex-basis 的简写
    align-self: 属性允许单个项目有与其他项目不一样的对齐方式(auto 表示继承父类无父类等同于 stretch)
 
-3. flex: 1 - flex: 1 1 0%
-
-   Flex 布局详解（含实例代码）--flex: 1 1 auto；flex: 0 0 auto 是什么意思？
-   https://juejin.cn/post/7034314491580022820
-
-   首先`flex`属性是`flex-grow`, `flex-shrink`, `flex-basis`的简写形式;
-
-   `flex-grow`: 定义项目的放大比例，即如果子元素未充满父元素，会按照一定的比例放大各个子元素，默认值为 0, 按比例放大
-
-   `flex-shrink`: 定义项目的缩小比例，即如果子元素的宽度超过父元素的宽度，会按照一定的比例缩小子元素，默认值为 0， 根据缩减系数和元素大小来计算
-
-   `flex-basis`: 表示在不伸缩的情况下自容器的原始尺寸
-   给上面两个属性分配多余空间之前，计算项目是否有多余空间，默认值为 auto,即项目本身的大小
-
-   所以`flex: 1`的完整写法是
-
-   ```css
-   flex-grow: 1;
-   flex-shrink: 1;
-   flex-basis: 0%; /* 这个百分比的数值会被解析为content*/
-   ```
-
-4. flex: auto
-
-   一文搞懂 flex:0,1,auto,none
-   https://juejin.cn/post/7061196914741477383
-
 # grid 布局
 
 # 元素隐藏方式
@@ -305,18 +226,13 @@ opacity：0 则仅仅不可见，但仍可被浏览器发现，也就能触发�
 
 # 定位方式及其区别
 
-static: 默认值, 没有定位，元素出现在正常的流中;
-
-relative: 相对于默认位置(即 static 时的位置)进行偏移，即定位基点是元素的默认位置;
-
-fixed: 相对于视口进行偏移,即定位基点是浏览器窗口;脱离标准文档流
-
-absolute: 相对于最近一级有定位祖先元素(一般是父元素(值不为 static))进行偏移，即定位基点是父元素;脱离标准文档流
-
-sticky: 它会产生动态效果，很像 relative 和 fixed 的结合
-在目标区域以内，它的行为就像 position:relative;在滑动过程中，某个元素距离其父元素的距离达到 sticky 粘性定位的要求时(比如 top：100px)；position:sticky 这时的效果相当于 fixed 定位，固定到适当位置。
-
-inherit: 从父元素继承 position 属性的值
+1. static: 默认值, 没有定位，元素出现在正常的流中;
+2. relative: 相对于默认位置(即 static 时的位置)进行偏移，即定位基点是元素的默认位置;
+3. fixed: 相对于视口进行偏移,即定位基点是浏览器窗口;脱离标准文档流
+4. absolute: 相对于最近一级有定位祖先元素(一般是父元素(值不为 static))进行偏移，即定位基点是父元素;脱离标准文档流
+5. sticky: 它会产生动态效果，很像 relative 和 fixed 的结合
+   在目标区域以内，它的行为就像 position:relative;在滑动过程中，某个元素距离其父元素的距离达到 sticky 粘性定位的要求时(比如 top：100px)；position:sticky 这时的效果相当于 fixed 定位，固定到适当位置。
+6. inherit: 从父元素继承 position 属性的值
 
 # margin 塌陷及合并问题
 
@@ -329,522 +245,164 @@ https://juejin.cn/post/6976272394247897101
 
 # 浮动模型及清除浮动的方法
 
-12. 浮动与清除浮动
+1. 浮动与清除浮动
 
-脱离文档流，也就是将元素从普通的布局排版中拿走，其他盒子在定位的时候，会当作脱离文档流的元素不存在而进行定位
+   脱离文档流，也就是将元素从普通的布局排版中拿走，其他盒子在定位的时候，会当作脱离文档流的元素不存在而进行定位
 
-当容器的高度为 auto，且容器的内容中有浮动的元素，在这种情况下，容器的高度不能自动伸长以适应内容的高度，使得内容溢出到容器外面而影响(甚至破坏)布局的现象叫浮动溢出，为了防止这个现象的出现，叫 CSS 清除浮动
+   当容器的高度为 auto，且容器的内容中有浮动的元素，在这种情况下，容器的高度不能自动伸长以适应内容的高度，使得内容溢出到容器外面而影响(甚至破坏)布局的现象叫浮动溢出，为了防止这个现象的出现，叫 CSS 清除浮动
 
-当父元素的高度没有设置时，父元素会被子元素的高度撑开，但是如果子元素变成浮动元素，脱离文档流，父元素没有内容可以适应，所以没有高度
+   当父元素的高度没有设置时，父元素会被子元素的高度撑开，但是如果子元素变成浮动元素，脱离文档流，父元素没有内容可以适应，所以没有高度
 
-```css
-.news {
-  background-color: gray;
-  border: solid 1px black;
-  /* method 2: 给浮动元素的容器添加overflow: hidden 或者overflow: auto */
-  overflow: hidden;
-}
+   ```css
+   .news {
+     background-color: gray;
+     border: solid 1px black;
+     /* method 2: 给浮动元素的容器添加overflow: hidden 或者overflow: auto */
+     overflow: hidden;
+   }
 
-.img {
-  background-color: #bfa;
-  width: 200px;
-  height: 200px;
-  float: left;
-}
+   .img {
+     background-color: #bfa;
+     width: 200px;
+     height: 200px;
+     float: left;
+   }
 
-p {
-  float: right;
-}
+   p {
+     float: right;
+   }
 
-/*method 1: 使用带clear属性的空元素  */
-.clear {
-  clear: both;
-}
-```
-
-```html
-<div class="news">
-  <div class="img"></div>
-  <p>Some text</p>
-  <div class="clear"></div>
-</div>
-```
-
-(1). 方法一: 使用带 clear 属性的空元素
-
-优点: 简单，代码少，浏览器兼容性好
-
-缺点: 需要添加大量无语义的 html 元素，代码不够优雅，后期不容易维护
-
-(2). 方法二: 使用 CSS 的`overflow`属性
-
-(3). 方法三: :after 伪元素法
-
-(4). 方法四：双伪元素清除浮动
-
-# css 哪些属性可以继承
-
-- 字体: line-height, font-family, font-size, font-style, font-weight, font
-- 文本: letter-spacing, text-align, text-indent, text-transform, word-spacing
-- 列表: list-style-image, list-style-position, list-style-type, list-style
-- 颜色: color
-
-# 包含块
-
-# a 标签的作用
-
-1. 跳转到外部网址
+   /*method 1: 使用带clear属性的空元素  */
+   .clear {
+     clear: both;
+   }
+   ```
 
    ```html
-   <a href="http://www.baidu.com" target="_blank">百度</a>
+   <div class="news">
+     <div class="img"></div>
+     <p>Some text</p>
+     <div class="clear"></div>
+   </div>
    ```
 
-2. 实现本地页面文件跳转
-3. 设置锚点。在网页任意位置添加一个标记，可以由任何地方跳转到这个标记处
-   定义锚点时，如果用 a 标签当做锚点，给 a 标签设置 name 属性，如果用其它标签当做锚点，给该标签设置 id 属性
+   (1). 方法一: 使用带 clear 属性的空元素
 
-   ```html
-   /* 在HTML文档中插入 id */
-   <h3 id="tips">详细说明</h3>
-   <p>内容</p>
-   /* 在HTML文档中创建一个链接到“详细说明” */
-   <a href="#tips">详细说明</a>
-   ```
+   优点: 简单，代码少，浏览器兼容性好
 
-# BFC 是什么？
+   缺点: 需要添加大量无语义的 html 元素，代码不够优雅，后期不容易维护
 
-https://github.com/zuopf769/notebook/blob/master/fe/BFC%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90/README.md
-BFC 全称： Block Formatting Context 块级格式化上下文
-简单来说，BFC 就是一个完全独立的空间(布局环境)，让空间里的子元素不会影响到外面的布局
+   (2). 方法二: 使用 CSS 的`overflow`属性
 
-## 如何生成 BFC？
+   (3). 方法三: :after 伪元素法
 
-1. 根元素
-2. float 的值不为 none
-3. overflow 的值不为 visible hidden|auto|scroll
-4. display 的值为 inline-block、table-cell、table-caption、flex
-5. position 的值为 absolute 或者 fixed
+   (4). 方法四：双伪元素清除浮动
 
-## BFC 的约束规则
+2. css 哪些属性可以继承
 
-- 内部的 Box 会在垂直方向上一个接一个的放置
-- 垂直方向上的距离由 margin 决定。（完整的说法是：属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠（塌陷），与方向无关。）
-- 每个元素的左外边距与包含块的左边界相接触（从左向右），即使浮动元素也是如此。（这说明 BFC 中子元素不会超出他的包含块，而 position 为 absolute 的元素可以超出他的包含块边界）
-- BFC 的区域不会与 float 的元素区域重叠
-- 计算 BFC 的高度时，浮动子元素也参与计算
-- BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面元素，反之亦然
+   - 字体: line-height, font-family, font-size, font-style, font-weight, font
+   - 文本: letter-spacing, text-align, text-indent, text-transform, word-spacing
+   - 列表: list-style-image, list-style-position, list-style-type, list-style
+   - 颜色: color
 
-## BFC 的作用
+3. 包含块
 
-1. 当两个相邻块级子元素分属于不同的 BFC 时可以阻止 margin 重叠(塌陷)
+4. BFC 是什么？
 
-2. 使用 float 脱离文档流，高度塌陷，即父元素高度不会被撑开。可以给父元素触发 BFC
+   1. 什么是 BFC
+      https://github.com/zuopf769/notebook/blob/master/fe/BFC%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90/README.md
+      BFC 全称： Block Formatting Context 块级格式化上下文
+      简单来说，BFC 就是一个完全独立的空间(布局环境)，让空间里的子元素不会影响到外面的布局
 
-3. 两栏布局
+   2. 如何生成 BFC？
 
-4. 清除内部浮动(应该就是解决高度塌陷)
+      1. 根元素
+      2. float 的值不为 none
+      3. overflow 的值不为 visible hidden|auto|scroll
+      4. display 的值为 inline-block、table-cell、table-caption、flex
+      5. position 的值为 absolute 或者 fixed
 
-```css
-.par {
-  border: 5px solid #fcc;
-  width: 300px;
-}
+   3. BFC 的约束规则
 
-.child {
-  border: 5px solid #f66;
-  width: 100px;
-  height: 100px;
-  float: left;
-}
-```
+      - 内部的 Box 会在垂直方向上一个接一个的放置
+      - 垂直方向上的距离由 margin 决定。（完整的说法是：属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠（塌陷），与方向无关。）
+      - 每个元素的左外边距与包含块的左边界相接触（从左向右），即使浮动元素也是如此。（这说明 BFC 中子元素不会超出他的包含块，而 position 为 absolute 的元素可以超出他的包含块边界）
+      - BFC 的区域不会与 float 的元素区域重叠
+      - 计算 BFC 的高度时，浮动子元素也参与计算
+      - BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面元素，反之亦然
 
-```html
-<body>
-  <div class="par">
-    <div class="child"></div>
-    <div class="child"></div>
-  </div>
-</body>
-```
+   4. BFC 的作用
 
-为达到清除内部浮动，我们可以触发 par 生成 BFC，那么 par 在计算高度时，par 内部的浮动元素 child 也会参与计算。
+      1. 当两个相邻块级子元素分属于不同的 BFC 时可以阻止 margin 重叠(塌陷)
 
-```css
-.par {
-  overflow: hidden;
-}
-```
+      2. 使用 float 脱离文档流，高度塌陷，即父元素高度不会被撑开。可以给父元素触发 BFC
 
-# 层叠上下文 层叠等级 层叠顺序 z-index
+      3. 两栏布局
 
-https://juejin.cn/post/6844903667175260174
-
-1. 层叠上下文
-   元素在页面 z 轴上的层叠关系
-
-2. 层叠等级
-   指层叠上下文中的层叠上下文元素在 z 轴上的上下顺序
-
-3. 层叠准则
-   1. 谁大谁上
-   2. 后来居上
-
-# style 写在 body 前后的区别
-
-写在 body 标签后由于浏览器以逐行方式对 html 文档进行解析，当解析到写在尾部的样式表（外联或写在 style 标签）会导致浏览器停止之前的渲染，等待加载且解析样式表完成之后重新渲染，在 windows 的 IE 下可能会出现 FOUC 现象（即样式失效导致的页面闪烁问题）
-
-# 如何实现响应式布局
-
-响应式布局的常用解决方案对比(媒体查询、百分比、rem 和 vw/vh）
-https://juejin.cn/post/6844903630655471624
-
-前端响应式布局原理与方案（详细版）
-https://juejin.cn/post/6844903814332432397
-
-# 实现对齐
-
-## 水平居中
-
-1. 文本/行内元素/行内块元素
-   `text-align + inline-block`
-
-   ```css
-   .outer {
-     text-align: center;
-   }
-
-   .inner {
-     display: inline-block;
-     text-align: left;
-   }
-   /*上面代码中的 text-align: center; 会使文本居中，但是对块级元素无效，如果将元素设置为 inline-block，该元素就会被当做文本对待，从而实现元素居中。*/
-   ```
-
-2. 单个块元素
-   `margin: 0 auto`
-
-   ```css
-   .inner {
-     display: block;
-     width: 100px; // width必须定宽，否则会继承父元素的宽度
-     margin: 0 auto;
-   }
-   ```
-
-3. 绝对定位
-
-   1. ` 绝对定位 + margin: auto`
+      4. 清除内部浮动(应该就是解决高度塌陷)
 
       ```css
-      .outer {
-        position: relative;
-      }
-
-      .inner {
-        position: absolute;
-        left: 0;
-        right: 0;
-        margin: auto;
-      }
-      ```
-
-   2. `绝对定位 + margin-left`
-
-      ```css
-      .outer {
-        position: relative;
-      }
-
-      .inner {
-        position: absolute;
-        left: 50%;
-        margin-left: -50px; // 水平居中
-        margin-top: -50px; // 垂直居中
-        width: 100px;
-        height: 100px;
-      }
-      ```
-
-   3. `绝对定位 + translate`
-
-      ```css
-      .outer {
-        position: relative;
-      }
-
-      .inner {
-        position: absolute;
-        left: 50%;
-        transform: translate(
-          -50%,
-          0
-        ); // 或者transform: translateX(-50%) 水平居中
-      }
-      ```
-
-4. flex 布局
-
-   ```css
-   .parent {
-     display: flex;
-     justify-content: center; // 水平布局
-     align-items: center; // 垂直布局
-   }
-   ```
-
-## 垂直居中
-
-1. 单行文本/行内元素/行内块元素
-   `height = line-height`
-
-   ```css
-   .inner {
-     height: 100px;
-     line-height: 100px;
-   }
-   ```
-
-2. 多行文本垂直居中(不能使用 line-height)
-   `table-cell + vertical-align`
-
-   1. 示例 1
-
-      ```css
-      footer {
-        width: 100%;
-      }
-      footer .blue_bg {
-        height: 40px;
-        background-color: #304b5e;
-
-        font-size: 1em;
-        color: #fff;
-        line-height: 40px; /* 垂直居中 */
-        text-align: center; /* 水平居中 */
-        cursor: pointer;
-      }
-      footer .footer_bottom {
-        width: 100%;
-        /* height:100px; */
-        background-color: #f3f3f3;
-        font-size: 1em;
-        display: table; /*关键语句*/
-        text-align: center;
-      }
-      .cell {
-        display: table-cell; /*关键语句*/
-        vertical-align: middle; /*关键语句  垂直居中*/
-      }
-      ```
-
-      ```html
-      <footer>
-        <div class="blue_bg">联系我们 | 网站声明 | 广告合作</div>
-        <div class="footer_bottom">
-          <div class="cell">
-            <p>
-              鄂ICP备05011509号 水利部长江水利委员会主办
-              长江委宣传出版中心制作维护
-            </p>
-            <p>
-              新闻线索：027-82927755 电话总机：027-82828114
-              投稿信箱：cjslw＠126.com
-            </p>
-            <p>作者: 番茄炒小六</p>
-          </div>
-        </div>
-      </footer>
-      ```
-
-   2. 示例 2
-
-      ```css
-      .parent {
-        background-color: pink;
-        display: table;
+      .par {
+        border: 5px solid #fcc;
         width: 300px;
-        height: 400px;
-        text-align: center;
       }
-      .son {
-        display: table-cell;
-        background-color: yellow;
-        vertical-align: middle;
+
+      .child {
+        border: 5px solid #f66;
+        width: 100px;
+        height: 100px;
+        float: left;
       }
       ```
 
       ```html
-      <div class="parent">
-        <p class="son">
-          会议认为，党的十八大以来，我国经济发展取得历史性成就、
-          发生历史性变革，为其他领域改革发展提供了重要物质条件。经济实力
-          再上新台阶，经济年均增长7.1%，成为世界经济增长的主要动力源和稳定器。
-        </p>
-      </div>
+      <body>
+        <div class="par">
+          <div class="child"></div>
+          <div class="child"></div>
+        </div>
+      </body>
       ```
 
-3. 绝对定位
-
-   1. `absolute + translate`
+      为达到清除内部浮动，我们可以触发 par 生成 BFC，那么 par 在计算高度时，par 内部的浮动元素 child 也会参与计算。
 
       ```css
-      .outer {
-        position: relative;
-      }
-
-      .inner {
-        position: absolute;
-        top: 50%;
-        /*  transform中translate偏移的百分比就是相对于元素自身的尺寸而言的。*/
-        transform: translate(0, -50%); /* 垂直居中 */
+      .par {
+        overflow: hidden;
       }
       ```
 
-   2. `absolute + margin-top`
+5. 层叠上下文 层叠等级 层叠顺序 z-index
 
-      ```css
-      .outer {
-        position: relative;
-      }
+   https://juejin.cn/post/6844903667175260174
 
-      .inner {
-        position: absolute;
-        top: 50%;
-        margin-top: -50px;
-        width: 100px;
-        height: 100px;
-      }
-      ```
+   1. 层叠上下文
+      元素在页面 z 轴上的层叠关系
 
-## 水平垂直居中
+   2. 层叠等级
+      指层叠上下文中的层叠上下文元素在 z 轴上的上下顺序
 
-```html
-<div class="outer" style="width: 200px; height: 200px; background-color: red">
-  <div
-    class="inner"
-    style="width: 20px; height: 20px; background-color: yellow"
-  ></div>
-</div>
-```
+   3. 层叠准则
+   4. 谁大谁上
+   5. 后来居上
 
-1. `flex`方案
+6. 如何实现响应式布局
+   响应式布局: 一个网站能够兼容多个终端，而不是为每一个终端做一个特定的版本。
+   响应式布局的常用解决方案对比(媒体查询、百分比、rem 和 vw/vh）
+   https://juejin.cn/post/6844903630655471624
 
-   1. `flex` 容器
-
-      ```css
-      .outer {
-        display: flex;
-        justify-content: center; /* 水平居中 */
-        align-items: center; /* 垂直居中 */
-      }
-      ```
-
-   2. `flex` 容器+项目
-
-      ```css
-      .outer {
-        display: flex;
-        justify-content: center; /* 水平居中 */
-      }
-      .inner {
-        align-self: center; /* 垂直居中 */
-      }
-      ```
-
-   3. `flex + margin`
-
-      ```css
-      .outer {
-        display: flex;
-      }
-
-      .inner {
-        margin: auto;
-      }
-      ```
-
-2. 绝对定位
-
-   1. `absolute + transform` 未知宽高
-
-      ```css
-      .outer {
-        position: relative;
-      }
-
-      .inner {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-      ```
-
-   2. `absolute + margin` 绝对定位+负 margin 值(已知宽高)
-
-      ```css
-      .outer {
-        position: relative;
-      }
-
-      .inner {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin-top: -10px;
-        margin-left: -10px;
-      }
-      ```
-
-   3. `left/right/bottom/top + margin(auto)`(前提,inner 必须有宽高)
-
-      ```css
-      .outer {
-        position: relative;
-      }
-
-      .inner {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        margin: auto;
-      }
-      ```
-
-3. `grid`方案
-
-   1. `grid`
-
-      ```css
-      .outer {
-        display: grid;
-      }
-
-      .inner {
-        justify-self: center;
-        align-self: center;
-      }
-      ```
-
-   2. `grid + margin`
-
-      ```css
-      .outer {
-        display: grid;
-      }
-
-      .inner {
-        margin: auto;
-      }
-      ```
+   前端响应式布局原理与方案（详细版）
+   https://juejin.cn/post/6844903814332432397
 
 # 实现类
 
 1.  实现一个宽高自适应的正方形
 
-    1. 利用 vw
+    1. 利用视口 vw
+
+       ```html
+       <div class="square"></div>
+       ```
 
        ```css
        .square {
@@ -854,18 +412,18 @@ https://juejin.cn/post/6844903814332432397
        }
        ```
 
-    2. 实现父元素宽高未知的内部实现正方形
+    2. 实现父元素宽高未知的内部实现正方形,使用 padding
 
        ```css
        .box {
          width: 200px;
-         height: 200px;
+         height: 300px;
          background-color: pink;
        }
        .square {
-         width: 50%;
+         width: 100%;
          /* padding的百分比数值是相对父元素width计算的*/
-         padding-bottom: 50%;
+         padding-bottom: 100%;
          background-color: tomato;
        }
        ```
@@ -874,6 +432,26 @@ https://juejin.cn/post/6844903814332432397
        <div class="box">
          <div class="square"></div>
        </div>
+       ```
+
+    3. 伪元素设置 margin-top
+
+       ```html
+       <div class="inner"></div>
+       ```
+
+       ```css
+       .inner {
+         width: 100px;
+         overflow: hidden;
+         background: blue;
+       }
+
+       .inner::after {
+         content: "";
+         margin-top: 100%;
+         display: block;
+       }
        ```
 
 2.  一个自适应矩形，水平垂直居中， 且宽高比为 2:1
@@ -942,7 +520,347 @@ https://juejin.cn/post/6844903814332432397
        </div>
        ```
 
-4.  三栏布局实现-flex
+4.  水平居中
+
+    1.  文本/行内元素/行内块元素
+        `text-align + inline-block`
+
+        ```css
+        .outer {
+          text-align: center;
+        }
+
+        .inner {
+          display: inline-block;
+          text-align: left;
+        }
+        /*上面代码中的 text-align: center; 会使文本居中，但是对块级元素无效，如果将元素设置为 inline-block，该元素就会被当做文本对待，从而实现元素居中。*/
+        ```
+
+    2.  单个块元素
+        `margin: 0 auto`
+
+        ```css
+        .inner {
+          display: block;
+          width: 100px; // width必须定宽，否则会继承父元素的宽度
+          margin: 0 auto;
+        }
+        ```
+
+    3.  绝对定位
+
+        1. ` 绝对定位 + margin: auto`
+
+           ```css
+           .outer {
+             position: relative;
+           }
+
+           .inner {
+             position: absolute;
+             left: 0;
+             right: 0;
+             margin: auto;
+           }
+           ```
+
+        2. `绝对定位 + margin-left`
+
+           ```css
+           .outer {
+             position: relative;
+           }
+
+           .inner {
+             position: absolute;
+             left: 50%;
+             margin-left: -50px; // 水平居中
+             margin-top: -50px; // 垂直居中
+             width: 100px;
+             height: 100px;
+           }
+           ```
+
+        3. `绝对定位 + translate`
+
+           ```css
+           .outer {
+             position: relative;
+           }
+
+           .inner {
+             position: absolute;
+             left: 50%;
+             transform: translate(
+               -50%,
+               0
+             ); // 或者transform: translateX(-50%) 水平居中
+           }
+           ```
+
+    4.  flex 布局
+
+        ```css
+        .parent {
+          display: flex;
+          justify-content: center; // 水平布局
+          align-items: center; // 垂直布局
+        }
+        ```
+
+5.  垂直居中
+
+    1.  单行文本/行内元素/行内块元素
+        `height = line-height`
+
+        ```css
+        .inner {
+          height: 100px;
+          line-height: 100px;
+        }
+        ```
+
+    2.  多行文本垂直居中(不能使用 line-height)
+        `table-cell + vertical-align`
+
+        1.  示例 1
+
+            ```css
+            footer {
+              width: 100%;
+            }
+            footer .blue_bg {
+              height: 40px;
+              background-color: #304b5e;
+
+              font-size: 1em;
+              color: #fff;
+              line-height: 40px; /* 垂直居中 */
+              text-align: center; /* 水平居中 */
+              cursor: pointer;
+            }
+            footer .footer_bottom {
+              width: 100%;
+              /* height:100px; */
+              background-color: #f3f3f3;
+              font-size: 1em;
+              display: table; /*关键语句*/
+              text-align: center;
+            }
+            .cell {
+              display: table-cell; /*关键语句*/
+              vertical-align: middle; /*关键语句  垂直居中*/
+            }
+            ```
+
+            ```html
+            <footer>
+              <div class="blue_bg">联系我们 | 网站声明 | 广告合作</div>
+              <div class="footer_bottom">
+                <div class="cell">
+                  <p>
+                    鄂ICP备05011509号 水利部长江水利委员会主办
+                    长江委宣传出版中心制作维护
+                  </p>
+                  <p>
+                    新闻线索：027-82927755 电话总机：027-82828114
+                    投稿信箱：cjslw＠126.com
+                  </p>
+                  <p>作者: 番茄炒小六</p>
+                </div>
+              </div>
+            </footer>
+            ```
+
+        2.  示例 2
+
+            ```css
+            .parent {
+              background-color: pink;
+              display: table;
+              width: 300px;
+              height: 400px;
+              text-align: center;
+            }
+            .son {
+              display: table-cell;
+              background-color: yellow;
+              vertical-align: middle;
+            }
+            ```
+
+            ```html
+            <div class="parent">
+              <p class="son">
+                会议认为，党的十八大以来，我国经济发展取得历史性成就、
+                发生历史性变革，为其他领域改革发展提供了重要物质条件。经济实力
+                再上新台阶，经济年均增长7.1%，成为世界经济增长的主要动力源和稳定器。
+              </p>
+            </div>
+            ```
+
+    3.  绝对定位
+
+        1.  `absolute + translate`
+
+            ```css
+            .outer {
+              position: relative;
+            }
+
+            .inner {
+              position: absolute;
+              top: 50%;
+              /*  transform中translate偏移的百分比就是相对于元素自身的尺寸而言的。*/
+              transform: translate(0, -50%); /* 垂直居中 */
+            }
+            ```
+
+        2.  `absolute + margin-top`
+
+            ```css
+            .outer {
+              position: relative;
+            }
+
+            .inner {
+              position: absolute;
+              top: 50%;
+              margin-top: -50px;
+              width: 100px;
+              height: 100px;
+            }
+            ```
+
+6.  水平垂直居中
+
+    ```html
+    <div
+      class="outer"
+      style="width: 200px; height: 200px; background-color: red"
+    >
+      <div
+        class="inner"
+        style="width: 20px; height: 20px; background-color: yellow"
+      ></div>
+    </div>
+    ```
+
+    1.  `flex`方案
+
+        1. `flex` 容器
+
+           ```css
+           .outer {
+             display: flex;
+             justify-content: center; /* 水平居中 */
+             align-items: center; /* 垂直居中 */
+           }
+           ```
+
+        1. `flex` 容器+项目
+
+           ```css
+           .outer {
+             display: flex;
+             justify-content: center; /* 水平居中 */
+           }
+           .inner {
+             align-self: center; /* 垂直居中 */
+           }
+           ```
+
+        1. `flex + margin`
+
+           ```css
+           .outer {
+             display: flex;
+           }
+
+           .inner {
+             margin: auto;
+           }
+           ```
+
+    2.  绝对定位
+
+        1. `absolute + transform` 未知宽高
+
+           ```css
+           .outer {
+             position: relative;
+           }
+
+           .inner {
+             position: absolute;
+             left: 50%;
+             top: 50%;
+             transform: translate(-50%, -50%);
+           }
+           ```
+
+        1. `absolute + margin` 绝对定位+负 margin 值(已知宽高)
+
+           ```css
+           .outer {
+             position: relative;
+           }
+
+           .inner {
+             position: absolute;
+             left: 50%;
+             top: 50%;
+             margin-top: -10px;
+             margin-left: -10px;
+           }
+           ```
+
+        1. `left/right/bottom/top + margin(auto)`(前提,inner 必须有宽高)
+
+           ```css
+           .outer {
+             position: relative;
+           }
+
+           .inner {
+             position: absolute;
+             left: 0;
+             right: 0;
+             bottom: 0;
+             top: 0;
+             margin: auto;
+           }
+           ```
+
+    3.  `grid`方案
+
+        1. `grid`
+
+           ```css
+           .outer {
+             display: grid;
+           }
+
+           .inner {
+             justify-self: center;
+             align-self: center;
+           }
+           ```
+
+        1. `grid + margin`
+
+           ```css
+           .outer {
+             display: grid;
+           }
+
+           .inner {
+             margin: auto;
+           }
+           ```
+
+7.  三栏布局实现-flex
     概念: 页面中有三栏， 左右两栏宽度固定， 中间自适应的布局
 
     ```css
@@ -979,7 +897,7 @@ https://juejin.cn/post/6844903814332432397
     </div>
     ```
 
-5.  圣杯布局
+8.  圣杯布局
 
     利用浮动+padding+负边距来实现
 
@@ -1032,7 +950,7 @@ https://juejin.cn/post/6844903814332432397
 
     总结: 1). 先写 middle,然后是 left 和 right, 因为要先渲染 middle; 2). left, right 需设置`position: relative`以及相应的 left, right 值; 3). 负边距的作用, left 的`margin-left: -100%`使它上移一行, 同时 right 向左移占据 left 原先位置，同理, right 的`margin-left: -100px`使它上移并靠右
 
-6.  双飞翼布局
+9.  双飞翼布局
 
     利用浮动+margin+负边距
 
@@ -1083,7 +1001,7 @@ https://juejin.cn/post/6844903814332432397
 
     总结: 跟圣杯布局没多大区别，就是 middle 的实现不一样，圣杯布局是 middle+padding,双飞翼布局采用子元素+margin
 
-7.  两列布局
+10. 两列布局
 
     左列定宽，右列自适应
 
@@ -1097,9 +1015,11 @@ https://juejin.cn/post/6844903814332432397
        ```
 
        ```css
-       * {
-         margin: 0;
+       body,
+       html {
          padding: 0;
+         margin: 0;
+         height: 100%;
        }
        .left {
          background-color: rgb(231, 160, 160);
@@ -1115,7 +1035,7 @@ https://juejin.cn/post/6844903814332432397
        }
        ```
 
-    2. 左 float, 右 overflow
+    2. 左 float, 右 overflow(BFC)
 
        ```html
        <body>
@@ -1125,6 +1045,8 @@ https://juejin.cn/post/6844903814332432397
        ```
 
        ```css
+       /* body和html的height一定要加,
+       否则left和right的高度没有可以继承 */
        body,
        html {
          padding: 0;
@@ -1210,7 +1132,7 @@ https://juejin.cn/post/6844903814332432397
        }
        ```
 
-8.  上下固定中间自适应布局实现
+11. 上下固定中间自适应布局实现
 
     1.  flex 布局实现
 
@@ -1281,7 +1203,7 @@ https://juejin.cn/post/6844903814332432397
         }
         ```
 
-9.  单行文本和多行文本溢出省略
+12. 单行文本和多行文本溢出省略
     https://juejin.cn/post/6844903461209767944
     https://zhuanlan.zhihu.com/p/30707916
 
@@ -1365,12 +1287,12 @@ https://juejin.cn/post/6844903814332432397
 
        3. JS 代码解决方案
 
-10. 画一条 0.5px 的线
+13. 画一条 0.5px 的线
 
     https://juejin.cn/post/6844903845617729549
     https://juejin.cn/post/6844903582370643975
 
-11. 实现各种图形
+14. 实现各种图形
     https://segmentfault.com/a/1190000002780453
 
     1. CSS 如何实现一个半圆
@@ -1454,9 +1376,9 @@ https://juejin.cn/post/6844903814332432397
        }
        ```
 
-12. 轮播图
+15. 轮播图
 
-13. 实现下拉菜单
+16. 实现下拉菜单
 
     ```css
     .box {
@@ -1517,146 +1439,266 @@ https://juejin.cn/post/6844903814332432397
     </div>
     ```
 
-# CSS3
+# 问题类
 
-# HTML5
+1. 介绍 CSS 盒模型
 
-# 区别 flex:1 flex:0 flex:auto
+   页面上任何一个元素我们都可以看成是一个盒子，盒子会占用一定的空间和位置，他们之间相互制约，就形成了网页的布局
 
-- flex 是 flex-grow,flex-shrink,flex-basis 3 个属性结合在一起的缩写形式
-  1. flex: none 表示 flex: 0 0 auto
-  2. flex: 1 表示 flex: 1 1 auto
-  3. flex: auto 表示 flex: 1 1 auto
+   盒模型由四个部分构成: content, border, padding, margin
 
-1. 当 flex 取值为一个非负数字，则该数字为 flex-grow 值，flex-shrink 取 1，flex-basis 取 0%，如下是等同的：
+   W3C 标准盒模型 属性 width,height 只包含内容 content
+   IE 盒模型(怪异盒模型) 属性 width,height = content + padding + border
 
    ```css
-   .item {
-     flex: 1;
+   /*
+   当设置为box-sizing: content-box时， 将采用标准模式解析计算，也是默认模式；
+   当设置为box-sizing: border-box时，将采用IE盒模式解析计算
+   */
+   box-sizing: content-box || border-box || inherit;
+   ```
+
+2. flex: 1 是什么意思？ 0 1 auto
+
+   CSS 属性 flex 规定了弹性元素如何伸长或缩短以适应 flex 容器中的可用空间。
+   flex 属性是 flex-grow,flex-shrink,flex-basis 的缩写，默认值为 0 1 auto
+
+   - flex-grow 属性定义项目的放大比例，默认为 0(即如果存在剩余空间，也不放大)
+   - flex-shrink 属性定义了项目的缩小比例，默认为 1(即如果空间不足，该项目将缩小)
+     flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据 flex-shrink 的值
+
+   - flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间。默认值为 auto，负值不被允许
+     该值的单位可以是 width 单位 px, 也可以是一个相对于其父弹性盒容器主轴尺寸的百分数
+
+3. overflow 有哪些属性
+
+   1. overflow 属性
+      1. auto
+      2. scroll
+      3. hidden
+      4. visible
+   2. overflow-x 对溢出的元素的左右边缘进行处理
+   3. overflow-y 对溢出的元素的上下边缘进行处理
+
+4. a 标签的作用
+
+   1. 跳转到外部网址
+
+      ```html
+      <a href="http://www.baidu.com" target="_blank">百度</a>
+      ```
+
+   2. 实现本地页面文件跳转
+   3. 设置锚点。在网页任意位置添加一个标记，可以由任何地方跳转到这个标记处
+      定义锚点时，如果用 a 标签当做锚点，给 a 标签设置 name 属性，如果用其它标签当做锚点，给该标签设置 id 属性
+
+      ```html
+      /* 在HTML文档中插入 id */
+      <h3 id="tips">详细说明</h3>
+      <p>内容</p>
+      /* 在HTML文档中创建一个链接到“详细说明” */
+      <a href="#tips">详细说明</a>
+      ```
+
+5. 滚动条样式属性有哪些
+
+   ::-webkit-scrollbar 滚动条整体部分，可以设置宽度
+   ::-webkit-scrollbar-button 滚动条两端的按钮
+   ::-webkit-scrollbar-track 外层轨道
+   ::-webkit-scrollbar-track-piece 内层滚动槽
+   ::-webkit-scrollbar-thumb 滚动的滑块
+   ::-webkit-scrollbar-corner 边角
+   ::-webkit-resizer 定义右下角拖动块的样式
+
+   ```html
+   <div class="test bar">
+     ::-webkit-scrollbar 滚动条整体部分，可以设置宽度 ::-webkit-scrollbar-button
+     滚动条两端的按钮 ::-webkit-scrollbar-track 外层轨道
+     ::-webkit-scrollbar-track-piece 内层滚动槽 ::-webkit-scrollbar-thumb
+     滚动的滑块 ::-webkit-scrollbar-corner 边角 ::-webkit-resizer
+     定义右下角拖动块的样式::-webkit-scrollbar 滚动条整体部分，可以设置宽度
+     ::-webkit-scrollbar-button 滚动条两端的按钮 ::-webkit-scrollbar-track
+     外层轨道 ::-webkit-scrollbar-track-piece 内层滚动槽
+     ::-webkit-scrollbar-thumb 滚动的滑块 ::-webkit-scrollbar-corner 边角
+     ::-webkit-resizer 定义右下角拖动块的样式::-webkit-scrollbar
+     滚动条整体部分，可以设置宽度 ::-webkit-scrollbar-button 滚动条两端的按钮
+     ::-webkit-scrollbar-track 外层轨道 ::-webkit-scrollbar-track-piece
+     内层滚动槽 ::-webkit-scrollbar-thumb 滚动的滑块 ::-webkit-scrollbar-corner
+     边角 ::-webkit-resizer 定义右下角拖动块的样式
+   </div>
+   ```
+
+   ```css
+   .test {
+     width: 200px;
+     height: 400px;
+     overflow: scroll;
+     float: auto;
+     padding: 0 20px;
+     border: none;
    }
-   .item {
-     flex-grow: 1;
-     flex-shrink: 1;
-     flex-basis: 0%;
+   /*滚动条整体样式,可以设置宽高*/
+   .bar::-webkit-scrollbar {
+     width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+     height: 10px;
+   }
+   /*滚动条里面小方块,即滚动条*/
+   .bar::-webkit-scrollbar-thumb {
+     border-radius: 10px;
+     background-color: skyblue;
+   }
+   /*滚动条里面轨道*/
+   .bar::-webkit-scrollbar-track {
+     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+     background: #f4eeee;
+     border-radius: 10px;
    }
    ```
 
-2. 当 flex 取值为两个非负数字，则分别视为 flex-grow 和 flex-shrink 的值，flex-basis 取 0%，如下是等同的：
+6. img 是行内元素吗?
+   行内元素, 但是可以设置宽高属性
+   因为 img 属于可替换元素，可替换元素的性质同设置了 display:inline-block 的元素一致
+   所以具有内置的宽高属性
+
+7. 行内元素，块级元素和行内块的区别
+
+   1. 块级元素 display:block
+      1. 独占一行,宽度自动填满父元素宽度(继承父元素宽度)
+      2. 宽高可以自由设置
+   2. 行内元素 display:inline
+      1. 宽度由内容决定, 在同一行直到放不下才会另起一行
+      2. 不可以设置 width height
+      3. 只能设置左右的 padding 和 margin
+   3. 行内块元素 display:inline-block
+      1. 宽度由内容决定
+      2. 可以设置宽高，也可以设置 margin 和 padding
+      3. 默认有间隙
+
+8. `display: none`与`visibility: hidden`与`opacity: 0`的区别
+
+   1. `display: none`会让元素完全从 dom 树中消失，渲染的时候不占据任何空间;
+      `visibility: hidden`不会让元素从渲染树消失，元素仍然会占据空间，只是内容不可见
+
+   2. `display: none`是非继承属性，子孙节点消失是由于元素从 dom 树消失造成的，通过修改子孙节点属性无法显示,
+      `visibility: hidden`是继承属性，子孙节点消失由于继承了`hidden`通过设置`visibility: visible`可以让子孙节点显示;
+
+   3. 修改常规元素的`display`通常会造成文档重排。
+      修改`visibility`属性只会造成本元素的重绘
+
+   4. opacity 会将元素设置为透明，但是其位置也在页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘
+
+9. flex: 1 - flex: 1 1 0%
+
+   Flex 布局详解（含实例代码）--flex: 1 1 auto；flex: 0 0 auto 是什么意思？
+   https://juejin.cn/post/7034314491580022820
+
+   首先`flex`属性是`flex-grow`, `flex-shrink`, `flex-basis`的简写形式;
+
+   `flex-grow`: 定义项目的放大比例，即如果子元素未充满父元素，会按照一定的比例放大各个子元素，默认值为 0, 按比例放大
+
+   `flex-shrink`: 定义项目的缩小比例，即如果子元素的宽度超过父元素的宽度，会按照一定的比例缩小子元素，默认值为 0， 根据缩减系数和元素大小来计算
+
+   `flex-basis`: 表示在不伸缩的情况下自容器的原始尺寸
+   给上面两个属性分配多余空间之前，计算项目是否有多余空间，默认值为 auto,即项目本身的大小
+
+   所以`flex: 1`的完整写法是
 
    ```css
-   .item {
-     flex: 2 3;
-   }
-   .item {
-     flex-grow: 2;
-     flex-shrink: 3;
-     flex-basis: 0%;
-   }
+   flex-grow: 1;
+   flex-shrink: 1;
+   flex-basis: 0%; /* 这个百分比的数值会被解析为content*/
    ```
 
-3. 当 flex 取值为一个长度或者百分比，则视为 flex-basis 值，flex-grow 取 1，flex-shrink 取 1，如下是等同的：
+10. css3 属性有哪些
 
-   ```css
-   .item {
-     flex: 0%;
-   }
-   .item {
-     flex-grow: 1;
-     flex-shrink: 1;
-     flex-basis: 0%;
-   }
-   .item {
-     flex: ;
-   }
-   .item {
-     flex-grow: 1;
-     flex-shrink: 1;
-     flex-basis: 0%;
-   }
-   ```
+    1. 边框
+       border-radius
+       box-shadow
+    2. 背景
+       background-image
+    3. 渐变
+       ```css
+       background-image: linear-gradients;
+       ```
+    4. 文本
+       text-overflow
+       text-wrap
+    5. 字体引用
+    6. 2D 转换 transform
+       1. translate
+       2. rotate
+       3. scale
+       4. skew
+    7. 3D 转换
+       1. rotateX()
+       2. rotateY()
+    8. 过渡 transition
+       指定要添加效果的 CSS 属性和指定效果的持续时间
+       `transition: width 2s`
 
-## flex: 1 是什么意思？
+       ```css
+       div {
+         width: 100px;
+         height: 100px;
+         background: red;
+         transition: width 2s, height 2s, transform 2s;
+       }
 
-CSS 属性 flex 规定了弹性元素如何伸长或缩短以适应 flex 容器中的可用空间。
-flex 属性是 flex-grow,flex-shrink,flex-basis 的缩写，默认值为 0 1 auto
+       div:hover {
+         width: 200px;
+         height: 200px;
+         transform: rotate(180deg);
+       }
+       ```
 
-- flex-grow 属性定义项目的放大比例，默认为 0(即如果存在剩余空间，也不放大)
-- flex-shrink 属性定义了项目的缩小比例，默认为 1(即如果空间不足，该项目将缩小)
-  flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据 flex-shrink 的值
+       ```html
+       <div>鼠标移动到 div 元素上，查看过渡效果。</div>
+       ```
 
-- flex-basis 属性定义了在分配多余空间之前，项目占据的主轴空间。默认值为 auto，负值不被允许
-  该值的单位可以是 width 单位 px, 也可以是一个相对于其父弹性盒容器主轴尺寸的百分数
+    9. 动画 animation
+    10. 多媒体查询
+    11. flex 布局
 
-# 原知识点
+11. 清除浮动的方法
 
-25. CSS 实现一个自适应的正方形
+12. style 写在 body 前后的区别
 
-```
-.box {
-  width: 200px;
-  height: 200px;
-}
+    写在 body 标签后由于浏览器以逐行方式对 html 文档进行解析，当解析到写在尾部的样式表（外联或写在 style 标签）会导致浏览器停止之前的渲染，等待加载且解析样式表完成之后重新渲染，在 windows 的 IE 下可能会出现 FOUC 现象（即样式失效导致的页面闪烁问题）
 
-CSS3 vw 单位，vw是相对于视口的宽度。视口被均分为100单位的vw。1vw = 1% viewport width
-.box{
-  width: 20%;//width:20vw也可以
-  height: 20vw;
-  background: pink;
-}
+13. 伪类和伪元素的区别? 有哪些伪类和伪元素
 
-设置盒子的padding-bottom样式，让盒子的padding-bottom和盒子的宽度一样，同时设置heigh = 0px；
-{
-  width: 20%;
-  /* 设置height为0 ，避免盒子被内容撑开多余的高度 */
-  height: 0px;
-  /* 把盒子的高撑开，
-     和width设置同样的固定的宽度或者百分比 ，
-     百分比相对的是父元素盒子的宽度 */
-  padding-bottom: 20%
+14. 常见的 css 兼容性问题
 
-}
-```
+    1. 不同的浏览器的标签默认的 margin 和 padding 不一样
+    2. 谷歌默认<12px 的文本强制按照 12px 显示，
 
-26. 重排和重绘
+       ```css
+       p {
+         font-size: 10px;
+         -webkit-text-size-adjust: none;
+       }
+       ```
 
-    1.HTML 被 HTML 解析器解析成 DOM 树；
-    2.CSS 被 CSS 解析器解析成 CSSOM 树； 3.结合 DOM 树和 CSSOM 树，生成一棵渲染树(Render Tree)，这一过程称为 Attachment； 4.生成布局(flow)，浏览器在屏幕上“画”出渲染树中的所有节点； 5.将布局绘制(paint)在屏幕上，显示出整个页面。
-    第四步和第五步是最耗时的部分，这两步合起来，就是我们通常所说的渲染。
+    3. a 标签的几个伪类样式按照 lvha
 
-重排: 当 DOM 的变化影响了元素的几何信息(元素的的位置和尺寸大小)，浏览器需要重新计算元素的几何属性，将其安放在界面中的正确位置，这个过程叫做重排。
+15. css 提高性能的方法有哪些
 
-重排也叫回流，简单的说就是重新生成布局，重新排列元素。
-
-页面初始渲染，这是开销最大的一次重排
-添加/删除可见的 DOM 元素
-改变元素位置
-改变元素尺寸，比如边距、填充、边框、宽度和高度等
-改变元素内容，比如文字数量，图片大小等
-改变元素字体大小
-改变浏览器窗口尺寸，比如 resize 事件发生时
-激活 CSS 伪类（例如：:hover）
-设置 style 属性的值，因为通过设置 style 属性改变结点样式的话，每一次设置都会触发一次 reflow
-查询某些属性或调用某些计算方法：offsetWidth、offsetHeight 等，除此之外，当我们调用 getComputedStyle 方法，或者 IE 里的 currentStyle 时，也会触发重排，原理是一样的，都为求一个“即时性”和“准确性”。
-
-重绘: 当一个元素的外观发生改变，但没有改变布局,重新把元素外观绘制出来的过程，叫做重绘。
-
-如何减少重绘和重排
-
-    (1). CSS
-
-      使用transform代替top;
-      使用visibility替换display: none，因为前者只会引起重绘，后者会引发回流
-      避免使用table布局，可能很小的一个改动会造成整个table的重新布局
-      尽可能在DOM树的最末端改变class，回流是不可避免的，但是可以减少影响，尽可能在DOM树的最末端改变class，可以限制了回流的范围，使其影响尽可能少的节点；
-      将动画效果应用到position属性为absolute或fixed的元素上，避免影响其他元素的布局，这样只是一个重绘而不是回流
-
-    (2). JavaScript
-
-      (1).避免频繁操作样式，最好一次性重写style属性，或者将样式列表定义为class并一次性更改class属性。
-      (2).避免频繁操作DOM，创建一个documentFragment，在它上面应用所有DOM操作，最后再把它添加到文档中。
-      (3).避免频繁读取会引发回流/重绘的属性，如果确实需要多次使用，就用一个变量缓存起来。
-      (4).对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流。
-
-27. script 标签的 async 和 defer 的区别
-
-都是提示浏览器先下载外部文件延迟执行，但是 defer 是顺序执行，async 是乱序的只要保证两个文件之间互相不依赖
+16. 图片方案选型
+    1. JPG 有损压缩
+       可应用于背景图、轮播图
+       1. 不支持透明度处理
+       2. 当它处理矢量图形和 Logo 等线条感较强、颜色对比强烈的图像时，会非常模糊
+    2. PNG 无损压缩, 支持透明
+       是一种无损压缩的高保真的图片格式
+       主要用于呈现小的 Logo, 颜色简单且对比强烈的图片或背景等,例如`淘宝网`
+       1. 体积太大
+    3. SVG 可缩放矢量图形
+       一种基于 XML 语法的图像格式，文件体积更小，可压缩性更强
+       文本文件, 图片可无限放大而不失真
+    4. Base64
+       一种编码方式，通过对图片进行 Base64 编码,直接将编码结果写入 HTML 或者写入 CSS，从而减少 HTTP 请求的次数
+       应用于非常小的 logo
+       1. 雪碧图
+          被运用于众多使用大量小图标的网页应用之上。它可取图像的一部分来使用，使得使用一个图像文件替代多个小文件成为可能
+    5. WebP
+       存在兼容性问题
