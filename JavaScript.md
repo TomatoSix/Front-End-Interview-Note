@@ -348,7 +348,7 @@ https://segmentfault.com/a/1190000022298822 冴羽
    ```js
    [] == ![]  // true
    // 空数组转为数字为 0 ， 除了数组外的引用类型全部为 NaN
-   // [] == ![] -> [] == false -> [] == 0 -> 0 == 0 -> true
+   // [] == ![] -> [] == !true -> [] == 0 -> 0 == 0 -> true
    {} == !{}  //false
    // {} 转数字是NaN
    // {} == !{} -> {} == false -> {} == 0 -> NaN == 0 -> false
@@ -1420,6 +1420,70 @@ ajax.onreadystatechange = function () {
 # 跨域方案
 
 # fetch
+
+关注分离思想
+第一次 then 表示联系服务器是否成功
+第二次 then 就是返回数据
+
+response.json()
+
+```js
+let url = "xxx/data";
+// fetch函数会返回一个promise
+fetch(url)
+  .then(
+    (res) => {
+      // res是一个response对象
+      console.log(res, "联系服务器成功了");
+      return res.json();
+    },
+    (err) => {
+      console.log(err, "联系服务器失败");
+      // 中断promise链
+      return new Promise(() => {});
+    }
+  )
+  .then(
+    (data) => {
+      console.log(data);
+    },
+    (err) => {
+      console.log(err, "获取数据失败了");
+    }
+  );
+```
+
+```js
+// 优化代码
+let url = "xxx/data";
+// fetch函数会返回一个promise
+fetch(url)
+  .then((res) => {
+    // res是一个response对象
+    console.log(res, "联系服务器成功了");
+    return res.json();
+  })
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+```
+
+```js
+// 优化代码
+let url = "xxx/data";
+// fetch函数会返回一个promise
+async function getData(url) {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+  } catch (e) {
+    console.log(e);
+  }
+}
+```
 
 # JS 的垃圾回收机制 GC(Garbage Collection)
 

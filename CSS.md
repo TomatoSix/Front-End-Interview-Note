@@ -1288,9 +1288,33 @@ https://juejin.cn/post/6976272394247897101
        3. JS 代码解决方案
 
 13. 画一条 0.5px 的线
-
+    关于移动端适配，你必须要知道的
     https://juejin.cn/post/6844903845617729549
+
+    怎么画一条 0.5px 的边（更新）
     https://juejin.cn/post/6844903582370643975
+
+    ```html
+    <div>0.5px</div>
+    <div class="line"></div>
+    <div>1px</div>
+    <div class="line2"></div>
+    ```
+
+    ```css
+    .line {
+      background-color: black;
+      width: 300px;
+      height: 1px;
+      transform: scaleY(0.5);
+      /* transform-origin: 50% 100%; */
+    }
+    .line2 {
+      background-color: black;
+      width: 300px;
+      height: 1px;
+    }
+    ```
 
 14. 实现各种图形
     https://segmentfault.com/a/1190000002780453

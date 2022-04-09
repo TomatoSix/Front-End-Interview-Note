@@ -10,6 +10,7 @@ class Promise{
         this.callbacks = [];
         //保存实例对象的 this 的值
         const self = this;// self _this that
+
         //resolve 函数
         function resolve(data){
             //判断状态
@@ -18,6 +19,7 @@ class Promise{
             self.PromiseState = 'fulfilled';// resolved
             //2. 设置对象结果值 (promiseResult)
             self.PromiseResult = data;
+
             //调用成功的回调函数
             setTimeout(() => {
                 self.callbacks.forEach(item => {
@@ -97,7 +99,8 @@ class Promise{
             }
             //判断 pending 状态
             if(this.PromiseState === 'pending'){
-                //保存回调函数
+                //保存回调函数, 解决promise中的异步问题
+                //解决指定多个回调的问题
                 this.callbacks.push({
                     onResolved: function(){
                         callback(onResolved);
@@ -184,5 +187,54 @@ class Promise{
 }   
 
 
+// let p = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//         resolve('OK')
+//     }, 2000)
+//     // resolve('OK')
+// })
+
+// p.then(res => {
+//     console.log(res, 'res1');
+// }, reason => {
+//     console.log(reason);
+// })
+
+// p.then(res => {
+//     console.log(res, 'res2');
+// }, reason => {
+//     console.log(reason, 'reason2');
+// })
 
 
+
+// let p = new Promise((resolve, reject) => {
+    
+//     resolve('OK')
+// })
+
+// const res = p.then(res => {
+//     console.log(res, 'res1');
+//     return 'hello'
+//     // return new Promise((resolve, reject) => {
+//     //     resolve('111')
+//     // })
+//     // throw '这是个错误'
+// }, reason => {
+//     console.log(reason);
+// })
+// console.log(res);
+
+
+// 异步修改修改状态
+const p = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve('OK')
+    }, 2000)
+})
+
+const res = p.then(value => {
+    console.log(value);
+    return '123'
+})
+console.log(res, 'res2');

@@ -50,18 +50,127 @@ String JS 的字符串包装类的类型
 2. Number
 3. String
 4. Array
-5. Enum 枚举
-6. Any
+5. Symbol
+
+   ```ts
+   const title1 = Symbol("title");
+   const title2 = Symbol("title");
+
+   const info = {
+     [title1]: "老师",
+     [title2]: "程序员",
+   };
+   ```
+
+6. Enum 枚举
+
+   ```ts
+   // 定义枚举
+   enum Gender {
+     Male = 0,
+     Female = 1,
+   }
+   let i: { name: string; gender: Gender };
+   i = {
+     name: "孙悟空",
+     gender: Gender.Male, //'male'
+   };
+   ```
+
+7. Tuple 元组
+
+   ```ts
+   const arr: [number, string] = [1, "1"];
+   ```
+
+8. any
    不会进行类型检测
-7. Never
-   never 类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型。
-   使用 never 避免出现新增了联合类型没有对应的实现，目的就是写出类型绝对安全的代码。
-8. Unknown
-9. Tuple 元组
-10. Void
-11. null 和 undefined
-12. 对象类型
-13. 类类型
+
+9. unknown
+   unknown 类型只能赋值给 unknown 和 any 类型
+   any 类型可以赋值给任意类型
+
+   ```ts
+   let flag = true;
+   let result: unknown;
+   // 或者
+   // let result: any;
+   // let result: string | number;
+   if (flag) {
+     result = "hell0";
+   } else {
+     result = 123;
+   }
+   ```
+
+10. never
+    never 类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型。
+    使用 never 避免出现新增了联合类型没有对应的实现，目的就是写出类型绝对安全的代码。
+
+    ```ts
+    // 表示永远没有返回结果
+    function foo(): never {
+      while (true) {}
+    }
+    ```
+
+    ```ts
+    // throw也不会有返回结果
+    function bar(): never {
+      throw new Error();
+    }
+    ```
+
+    ```ts
+    function handleMessage(message: number | string) {
+      switch (typeof message) {
+        case "string":
+          console.log("string处理方式");
+          break;
+        case "number":
+          console.log("number处理方式处理");
+          break;
+      }
+    }
+
+    function handleMessage(message: number | string | boolean) {
+      switch (typeof message) {
+        case "string":
+          console.log("string处理方式");
+          break;
+        case "number":
+          console.log("number处理方式处理");
+          break;
+        default:
+          // 如果其他人增加了message的类型如boolean,
+          // 编译时直接报错, 表示该函数对number|string以外的类型做了处理
+          const check: never = message;
+      }
+    }
+
+    // 如果某一天张三传进来boolean值，有可能会修改handleMessage函数， 添加boolean类型
+    handleMessage(true);
+    ```
+
+11. void
+    表示没有返回值
+
+    ```ts
+    function sum(num1: number, num2: number): void {
+      console.log(num1 + num2);
+    }
+    ```
+
+12. null 和 undefined
+
+    ```ts
+    let n1: null = null;
+    let n2: undefined = undefined;
+    ```
+
+13. 对象类型
+
+14. 类类型
 
     ```ts
     class Person {

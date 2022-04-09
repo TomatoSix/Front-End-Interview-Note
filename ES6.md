@@ -609,30 +609,6 @@ Promise 是一个对象，从它可以获取异步操作的消息
 
 Promise 的状态一经改变就不能再改变
 
-```js
-    let p = new Promise((resolve,reject) => {
-        resolve('OK')
-    });
-    p.then(value =>{
-        console.log(value);
-    },reason =>{
-        console.log(reason)
-    })
-
-    -----------------------------------------------
-    class Promise {
-      constructor(executor) {
-        const resolve = () => {
-
-        }
-
-        const reject = () => {
-
-        }
-      }
-    }
-```
-
 # Iterator 迭代器
 
 - 确使用户在容器对象上遍访的对象，使用该接口无需关心对象的内部实现细节
