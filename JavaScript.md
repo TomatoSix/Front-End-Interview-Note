@@ -642,7 +642,7 @@ Array.prototype.concat.apply([], arrayLike)
 
 # toString 和 valueOf 的使用
 
-`toString` 和 `valueOf` 几乎都是在出现操作符(+-\*/==><)时被调用(隐式转换)
+`toString` 和 `valueOf` 几乎都是在出现操作符(`+-/==><`)时被调用(隐式转换)
 
 https://juejin.cn/post/6873215243804213262
 

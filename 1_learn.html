@@ -24,63 +24,13 @@
   <title>Document</title>
 </head>
 <style>
-  .line {
-    background-color: black;
-    width: 300px;
-    height: 1px;
-    transform: scaleY(0.5);
-    /* transform-origin: 50% 100%; */
-  }
-  .line2 {
-    background-color: black;
-    width: 300px;
-    height: 1px;
-  }
+  
 </style>
 <body>
-  <div>0.5px</div>
-  <div class="line"></div>
-  <div>1px</div>
-  <div class="line2"></div>
+  <div id="container"></div>
   <script>
-    let p1 = new Promise((resolve, reject) => {
-      resolve(111)
-    })
-    let p2 = new Promise((resolve, reject) => {
-      resolve(222)
-    })
-    let p3 = new Promise((resolve, reject) => {
-      reject(333)
-    })
-
-    Promise.allSettled = function(promises) {
-      let arr = []
-      return new Promise((resolve, reject) => {
-        for (let i=0; i<promises.length; i++) {
-          promises[i].then(res => {
-            arr.push({
-              state: 'fulfilled',
-              result: res
-            })
-            if (arr.length === promises.length) {
-              resolve(arr)
-            }
-          }, reason => {
-            arr.push({
-              state: 'rejected',
-              result: reason
-            })
-            if (arr.length === promises.length) {
-              resolve(arr)
-            }
-          })
-        }
-      })
-    }
-
-    Promise.allSettled([p1,p2,p3]).then(res => {
-      console.log(res, 'res');
-    })
+    let container = document.getElementById('container')
+    console.log(container.tagName, container.id);
   </script>
 </body>
 </html>
