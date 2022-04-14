@@ -1,25 +1,15 @@
-// for (let i=0; i<=5; i++) {
-//   setTimeout(() => {
-//     console.log(i);
-//   }, 1000*i)
-// }
+let arr = [1, 2, 3, 4, 5];
 
-for (var i=0; i<=5; i++) {
-  (function(i) {
-    setTimeout(() => {
-      console.log(i);
-    }, 1000*(i+1))
-  })(i)
-}
-
-// var sleep = () => new Promise((resolve, reject) => {
-//   setTimeout(resolve, 1000)
-// })
-
-// async function print() {
-//   for (let i=0; i<=5; i++) {
-//     await sleep()
-//     console.log(i);
-//   }
-// }
-// print()
+arr.reduce((pre, cur) => {
+  return pre.then(() => {
+    // 实质上就是sleep函数
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log(cur);
+        resolve();
+        // 或者
+        // resolve(console.log(cur));
+      }, 1000);
+    });
+  });
+}, Promise.resolve());

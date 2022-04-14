@@ -1467,6 +1467,9 @@ https://juejin.cn/post/6976272394247897101
 
 1. 介绍 CSS 盒模型
 
+   一道关于 box-sizing 的字节面试题
+   https://juejin.cn/post/7082774002099290149
+
    页面上任何一个元素我们都可以看成是一个盒子，盒子会占用一定的空间和位置，他们之间相互制约，就形成了网页的布局
 
    盒模型由四个部分构成: content, border, padding, margin

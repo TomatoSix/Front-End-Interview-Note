@@ -1,70 +1,61 @@
-let activeReactiveFn = null
+let activeReactiveFn = null;
 
-class Depend{
+class Depend {
   constructor() {
-    this.reactiveFns = new Set()
+    this.reactiveFn = new Set();
   }
-
   depend() {
     if (activeReactiveFn) {
-      this.reactiveFns.add(activeReactiveFn)
+      this.reactiveFn.add(activeReactiveFn);
     }
   }
-
   notify() {
-    this.reactiveFns.forEach(fn => fn())
+    this.reactiveFn.forEach((fn) => fn());
   }
 }
-
-function watchFn(fn) {
-  activeReactiveFn = fn
-  fn()
-  activeReactiveFn = null
-}
-
-let wk = new WeakMap()
+let wk = new WeakMap();
 function getDepend(target, key) {
-  let map = wk.get(target) 
+  let map = wk.get(target);
   if (!map) {
-    map = new Map()
-    wk.set(target, map)
+    map = new Map();
+    wk.set(target, map);
   }
-  let depend = map.get(key)
+  let depend = map.get(key);
   if (!depend) {
-    depend = new Depend()
-    map.set(key, depend)
+    depend = new Depend();
+    map.set(key, depend);
   }
-  return depend
+  return depend;
+}
+function watchFn(fn) {
+  activeReactiveFn = fn;
+  fn();
+  activeReactiveFn = null;
 }
 
 function reactive(obj) {
   return new Proxy(obj, {
-    get: function(target, key, receiver) {
-      let depend = getDepend(target, key)
-      depend.depend()
-      return Reflect.get(target, key, receiver)
+    get(target, key, receiver) {
+      let depend = new getDepend(target, key);
+      depend.depend();
+      return Reflect.get(target, key, receiver);
     },
-    set: function(target, key, value, receiver) {
-      Reflect.set(target, key, value, receiver)
-      let depend = getDepend(target, key) 
-      depend.notify()
-    }
-  })
+    set(target, key, value, receiver) {
+      Reflect.set(target, key, value, receiver);
+      let depend = new getDepend(target, key);
+      depend.notify();
+    },
+  });
 }
 
+let obj = {
+  name: "six",
+  age: 18,
+};
 
-
-
-const obj = {
-  name: 'six',
-  age: 18
-}
-
-const objProxy = reactive(obj)
-
+let proxyObj = reactive(obj);
 watchFn(() => {
-  console.log(objProxy.name, '已自动监听该函数');
-  console.log(objProxy.name, '第二次输出');
-})
+  console.log(proxyObj.name, "name修改");
+});
 
-objProxy.name = '番茄'
+proxyObj.name = "番茄炒小六";

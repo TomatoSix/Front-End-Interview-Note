@@ -9,28 +9,91 @@
     </style>
   </head>
   <body>
+    <div id="outer" class="border">
+      5555
+      <span>content</span>
+    </div> 
     <script>
+      // 转化为
+      // {tag:'div',data:{id:'outer',class:'border'},children:[],value:'content'}
+      // nodeType 1-元素节点 2-属性节点 3-文本节点
+      class VNode{
+        /*tag:标签名，
+          *value:节点值
+          *type:节点类型
+          *data:属性组成的对象
+          *children:子元素
+         */
+        constructor(tag,value,data){
+            this.tag=tag&& tag.toLowerCase();
+            this.value=value;
+            // this.type=type;
+            this.data=data;
+            this.children=[];
+        }
+        /*追加子元素--虚拟dom*/
+        appendChild(vnode){
+            this.children.push(vnode)
+        }
+      }
+     //真实dom转化为虚拟dom
+      function getVNode(node){
+          let vnode = {}
+          // 表示元素节点
+          if (node.nodeType === 1) {
+            const data = {}
+            for (let i=0; i<node.attributes.length; i++) {
+              let attr = node.attributes[i]
+              data[attr.nodeName] = attr.nodeValue
+            }
+            vnode = new VNode(node.tagName, undefined, data)
+            console.log(vnode, '22');
+            if (node.children) {
+              for (let i=0; i<node.childNodes.length; i++) {
+                let item = node.childNodes[i]
+                vnode.children.push(getVNode(item))
+              }
+              
+            }
+          } else if (node.nodeType === 3) {
+            console.log(node, 'node');
+            vnode = new VNode(undefined, node.nodeValue, undefined)
+          }
+          console.log(vnode, 'vnode');
+          return vnode
+      }
+      var root=document.querySelector('#outer');
+      let vnode=getVNode(root);
+      console.log(JSON.stringify(vnode), 'res');
+      // console.log(vnode);
+
+      // 将虚拟dom转化为真实dom
+      // function parseVNode(vnode){
+      //   var _node;
+      //   if(vnode.type==1){
+      //     // 元素节点
+      //     _node=document.createElement(vnode.tag);
+      //     // 1.处理属性
+      //     Object.keys(vnode.data).forEach((attrName)=>{
+      //       _node.setAttribute(attrName,vnode.data[attrName]);
+      //     })
+      //     // 2.处理子元素
+      //     Object.keys(vnode.children).forEach((subvnode)=>{
+      //       _node.appendChild(parseVNode(vnode.children[subvnode]));
+      //     })
+      //   }else if(vnode.type==3){
+      //     // 文本节点
+      //     _node=document.createTextNode(vnode.value);
+      //   }
+      //   return _node;
+      // }
+      // var _node=parseVNode(vnode);
+      // console.log(_node);
+
+
+        
       
     </script>
   </body>
 </html>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<style>
-  
-</style>
-<body>
-  <div id="container"></div>
-  <script>
-    let container = document.getElementById('container')
-    console.log(container.tagName, container.id);
-  </script>
-</body>
-</html>

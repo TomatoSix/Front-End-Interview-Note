@@ -605,6 +605,7 @@ https://juejin.cn/post/6961222829979697165
     ```
 
 19. vuex 原理
+    Vuex 的双向绑定通过调用 new Vue 实现，然后通过 Vue.mixin 注入到 Vue 组件的生命周期中，再通过劫持 state.get 将数据放入组件中
 
 20. diff 算法原理
 
@@ -629,198 +630,217 @@ https://juejin.cn/post/6961222829979697165
           6. VNode 是元素节点
 
              1. 新节点包含子节点
-             2. 旧节点包含子节点
-                递归对比更新子节点，调用 updateChildren 方法
-             3. 旧节点不包含子节点
-                1. 旧节点是空节点
-                   新节点的子节点创建一份插入到旧节点里
-                2. 旧节点是文本节点
-                   文本清空，新节点的子节点创建一份插入到旧节点里
-             4. 新节点不包含子节点
+                1. 旧节点包含子节点
+                   递归对比更新子节点，调用 updateChildren 方法
+                2. 旧节点不包含子节点
+                   1. 旧节点是空节点
+                      新节点的子节点创建一份插入到旧节点里
+                   2. 旧节点是文本节点
+                      文本清空，新节点的子节点创建一份插入到旧节点里
+             2. 新节点不包含子节点
                 说明该节点是空节点，直接清空 oldVNode 节点内容
 
-       4. 新旧节点都包含子节点的逻辑
+       4. 新旧节点都包含子节点的逻辑 updateChildren
 
        - 把新的 VNode 上的子节点数组记为 newChildren，把旧的 oldVNode 上的子节点数组记为 oldChildren
        - 外层循环 newChildren 数组，内层循环 oldChildren 数组，每循环外层 newChildren 数组里的一个子节点，就去内层 oldChildren 数组里找看有没有与之相同的子节点
 
-       1. 创建节点
-          如果 newChildren 里面的某个子节点在 oldChildren 里找不到与之相同的子节点
-          把新创建的节点插入到所有未处理节点之前
-       2. 删除子节点
-          oldChildren 还存在未处理的子节点，将这些节点删除
+         1. 创建节点
+            如果 newChildren 里面的某个子节点在 oldChildren 里找不到与之相同的子节点
+            `把新创建的节点插入到所有未处理节点之前`
+         2. 删除子节点
+            oldChildren 还存在未处理的子节点，将这些节点删除
 
-       3. 更新子节点
-          如果 newChildren 里面的某个子节点在 oldChildren 里找到了与之相同的子节点，并且所处的位置也相同，那么就更新 oldChildren 里该节点，使之与 newChildren 里的该节点相同。
-       4. 移动子节点
-          如果 newChildren 里面的某个子节点在 oldChildren 里找到了与之相同的子节点，但是所处的位置不同，这说明此次变化需要调整该子节点的位置，那就以 newChildren 里子节点的位置为基准，调整 oldChildren 里该节点的位置，使之与在 newChildren 里的位置相同。
+         3. 更新子节点
+            如果 newChildren 里面的某个子节点在 oldChildren 里找到了与之相同的子节点，并且所处的位置也相同，那么就更新 oldChildren 里该节点，使之与 newChildren 里的该节点相同。
 
-       5. 更新子节点优化逻辑
-          newChildren 数组里的所有未处理子节点的第一个子节点称为：新前；
-          newChildren 数组里的所有未处理子节点的最后一个子节点称为：新后；
-          oldChildren 数组里的所有未处理子节点的第一个子节点称为：旧前；
-          oldChildren 数组里的所有未处理子节点的最后一个子节点称为：旧后；
+         4. 移动子节点
+            如果 newChildren 里面的某个子节点在 oldChildren 里找到了与之相同的子节点，但是所处的位置不同，这说明此次变化需要调整该子节点的位置，那就以 newChildren 里子节点的位置为基准，调整 oldChildren 里该节点的位置，使之与在 newChildren 里的位置相同。
 
-       6. 新前与旧前
-          若相同，无需进行节点移动操作
-       7. 新后与旧后
-          若相同，无需进行节点移动操作
-       8. 新后与旧前
-          若相同， 我们要把 oldChildren 数组里把第一个子节点移动到数组中所有未处理节点之后。
-       9. 新前与旧后
-          若相同，我们要把 oldChildren 数组里把最后一个子节点移动到数组中所有未处理节点之前。
-       10. 继续下一轮循环
+         5. 更新子节点优化逻辑
+            newChildren 数组里的所有未处理子节点的第一个子节点称为：新前；
+            newChildren 数组里的所有未处理子节点的最后一个子节点称为：新后；
+            oldChildren 数组里的所有未处理子节点的第一个子节点称为：旧前；
+            oldChildren 数组里的所有未处理子节点的最后一个子节点称为：旧后；
 
-       ```js
-       // 循环更新子节点
-       function updateChildren(
-         parentElm,
-         oldCh,
-         newCh,
-         insertedVnodeQueue,
-         removeOnly
-       ) {
-         let oldStartIdx = 0; // oldChildren开始索引
-         let oldEndIdx = oldCh.length - 1; // oldChildren结束索引
-         let oldStartVnode = oldCh[0]; // oldChildren中所有未处理节点中的第一个
-         let oldEndVnode = oldCh[oldEndIdx]; // oldChildren中所有未处理节点中的最后一个
+            1. 新前与旧前
+               若相同，无需进行节点移动操作
+            2. 新后与旧后
+               若相同，无需进行节点移动操作
+            3. 新后与旧前
+               若相同， 我们要把 oldChildren 数组里把第一个子节点移动到数组中所有未处理节点之后。
+            4. 新前与旧后
+               若相同，我们要把 oldChildren 数组里把最后一个子节点移动到数组中所有未处理节点之前。
+            5. 继续下一轮循环
 
-         let newStartIdx = 0; // newChildren开始索引
-         let newEndIdx = newCh.length - 1; // newChildren结束索引
-         let newStartVnode = newCh[0]; // newChildren中所有未处理节点中的第一个
-         let newEndVnode = newCh[newEndIdx]; // newChildren中所有未处理节点中的最后一个
-
-         let oldKeyToIdx, idxInOld, vnodeToMove, refElm;
-
-         // removeOnly is a special flag used only by <transition-group>
-         // to ensure removed elements stay in correct relative positions
-         // during leaving transitions
-         const canMove = !removeOnly;
-
-         if (process.env.NODE_ENV !== "production") {
-           checkDuplicateKeys(newCh);
-         }
-
-         // 以"新前"、"新后"、"旧前"、"旧后"的方式开始比对节点
-         while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
-           if (isUndef(oldStartVnode)) {
-             oldStartVnode = oldCh[++oldStartIdx]; // 如果oldStartVnode不存在，则直接跳过，比对下一个
-           } else if (isUndef(oldEndVnode)) {
-             oldEndVnode = oldCh[--oldEndIdx];
-           } else if (sameVnode(oldStartVnode, newStartVnode)) {
-             // 如果新前与旧前节点相同，就把两个节点进行patch更新
-             patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue);
-             oldStartVnode = oldCh[++oldStartIdx];
-             newStartVnode = newCh[++newStartIdx];
-           } else if (sameVnode(oldEndVnode, newEndVnode)) {
-             // 如果新后与旧后节点相同，就把两个节点进行patch更新
-             patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue);
-             oldEndVnode = oldCh[--oldEndIdx];
-             newEndVnode = newCh[--newEndIdx];
-           } else if (sameVnode(oldStartVnode, newEndVnode)) {
-             // Vnode moved right
-             // 如果新后与旧前节点相同，先把两个节点进行patch更新，然后把旧前节点移动到oldChilren中所有未处理节点之后
-             patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue);
-             canMove &&
-               nodeOps.insertBefore(
+               ```js
+               // 循环更新子节点
+               function updateChildren(
                  parentElm,
-                 oldStartVnode.elm,
-                 nodeOps.nextSibling(oldEndVnode.elm)
-               );
-             oldStartVnode = oldCh[++oldStartIdx];
-             newEndVnode = newCh[--newEndIdx];
-           } else if (sameVnode(oldEndVnode, newStartVnode)) {
-             // Vnode moved left
-             // 如果新前与旧后节点相同，先把两个节点进行patch更新，然后把旧后节点移动到oldChilren中所有未处理节点之前
-             patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue);
-             canMove &&
-               nodeOps.insertBefore(
-                 parentElm,
-                 oldEndVnode.elm,
-                 oldStartVnode.elm
-               );
-             oldEndVnode = oldCh[--oldEndIdx];
-             newStartVnode = newCh[++newStartIdx];
-           } else {
-             // 如果不属于以上四种情况，就进行常规的循环比对patch
-             if (isUndef(oldKeyToIdx))
-               oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx);
-             idxInOld = isDef(newStartVnode.key)
-               ? oldKeyToIdx[newStartVnode.key]
-               : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
-             // 如果在oldChildren里找不到当前循环的newChildren里的子节点
-             if (isUndef(idxInOld)) {
-               // New element
-               // 新增节点并插入到合适位置
-               createElm(
-                 newStartVnode,
-                 insertedVnodeQueue,
-                 parentElm,
-                 oldStartVnode.elm,
-                 false,
+                 oldCh,
                  newCh,
-                 newStartIdx
-               );
-             } else {
-               // 如果在oldChildren里找到了当前循环的newChildren里的子节点
-               vnodeToMove = oldCh[idxInOld];
-               // 如果两个节点相同
-               if (sameVnode(vnodeToMove, newStartVnode)) {
-                 // 调用patchVnode更新节点
-                 patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue);
-                 oldCh[idxInOld] = undefined;
-                 // canmove表示是否需要移动节点，如果为true表示需要移动，则移动节点，如果为false则不用移动
-                 canMove &&
-                   nodeOps.insertBefore(
+                 insertedVnodeQueue,
+                 removeOnly
+               ) {
+                 let oldStartIdx = 0; // oldChildren开始索引
+                 let oldEndIdx = oldCh.length - 1; // oldChildren结束索引
+                 let oldStartVnode = oldCh[0]; // oldChildren中所有未处理节点中的第一个
+                 let oldEndVnode = oldCh[oldEndIdx]; // oldChildren中所有未处理节点中的最后一个
+
+                 let newStartIdx = 0; // newChildren开始索引
+                 let newEndIdx = newCh.length - 1; // newChildren结束索引
+                 let newStartVnode = newCh[0]; // newChildren中所有未处理节点中的第一个
+                 let newEndVnode = newCh[newEndIdx]; // newChildren中所有未处理节点中的最后一个
+
+                 let oldKeyToIdx, idxInOld, vnodeToMove, refElm;
+
+                 // removeOnly is a special flag used only by <transition-group>
+                 // to ensure removed elements stay in correct relative positions
+                 // during leaving transitions
+                 const canMove = !removeOnly;
+
+                 if (process.env.NODE_ENV !== "production") {
+                   checkDuplicateKeys(newCh);
+                 }
+
+                 // 以"新前"、"新后"、"旧前"、"旧后"的方式开始比对节点
+                 while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+                   if (isUndef(oldStartVnode)) {
+                     oldStartVnode = oldCh[++oldStartIdx]; // 如果oldStartVnode不存在，则直接跳过，比对下一个
+                   } else if (isUndef(oldEndVnode)) {
+                     oldEndVnode = oldCh[--oldEndIdx];
+                   } else if (sameVnode(oldStartVnode, newStartVnode)) {
+                     // 如果新前与旧前节点相同，就把两个节点进行patch更新
+                     patchVnode(
+                       oldStartVnode,
+                       newStartVnode,
+                       insertedVnodeQueue
+                     );
+                     oldStartVnode = oldCh[++oldStartIdx];
+                     newStartVnode = newCh[++newStartIdx];
+                   } else if (sameVnode(oldEndVnode, newEndVnode)) {
+                     // 如果新后与旧后节点相同，就把两个节点进行patch更新
+                     patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue);
+                     oldEndVnode = oldCh[--oldEndIdx];
+                     newEndVnode = newCh[--newEndIdx];
+                   } else if (sameVnode(oldStartVnode, newEndVnode)) {
+                     // Vnode moved right
+                     // 如果新后与旧前节点相同，先把两个节点进行patch更新，然后把旧前节点移动到oldChilren中所有未处理节点之后
+                     patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue);
+                     canMove &&
+                       nodeOps.insertBefore(
+                         parentElm,
+                         oldStartVnode.elm,
+                         nodeOps.nextSibling(oldEndVnode.elm)
+                       );
+                     oldStartVnode = oldCh[++oldStartIdx];
+                     newEndVnode = newCh[--newEndIdx];
+                   } else if (sameVnode(oldEndVnode, newStartVnode)) {
+                     // Vnode moved left
+                     // 如果新前与旧后节点相同，先把两个节点进行patch更新，然后把旧后节点移动到oldChilren中所有未处理节点之前
+                     patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue);
+                     canMove &&
+                       nodeOps.insertBefore(
+                         parentElm,
+                         oldEndVnode.elm,
+                         oldStartVnode.elm
+                       );
+                     oldEndVnode = oldCh[--oldEndIdx];
+                     newStartVnode = newCh[++newStartIdx];
+                   } else {
+                     // 如果不属于以上四种情况，就进行常规的循环比对patch
+                     if (isUndef(oldKeyToIdx))
+                       oldKeyToIdx = createKeyToOldIdx(
+                         oldCh,
+                         oldStartIdx,
+                         oldEndIdx
+                       );
+                     idxInOld = isDef(newStartVnode.key)
+                       ? oldKeyToIdx[newStartVnode.key]
+                       : findIdxInOld(
+                           newStartVnode,
+                           oldCh,
+                           oldStartIdx,
+                           oldEndIdx
+                         );
+                     // 如果在oldChildren里找不到当前循环的newChildren里的子节点
+                     if (isUndef(idxInOld)) {
+                       // New element
+                       // 新增节点并插入到合适位置
+                       createElm(
+                         newStartVnode,
+                         insertedVnodeQueue,
+                         parentElm,
+                         oldStartVnode.elm,
+                         false,
+                         newCh,
+                         newStartIdx
+                       );
+                     } else {
+                       // 如果在oldChildren里找到了当前循环的newChildren里的子节点
+                       vnodeToMove = oldCh[idxInOld];
+                       // 如果两个节点相同
+                       if (sameVnode(vnodeToMove, newStartVnode)) {
+                         // 调用patchVnode更新节点
+                         patchVnode(
+                           vnodeToMove,
+                           newStartVnode,
+                           insertedVnodeQueue
+                         );
+                         oldCh[idxInOld] = undefined;
+                         // canmove表示是否需要移动节点，如果为true表示需要移动，则移动节点，如果为false则不用移动
+                         canMove &&
+                           nodeOps.insertBefore(
+                             parentElm,
+                             vnodeToMove.elm,
+                             oldStartVnode.elm
+                           );
+                       } else {
+                         // same key but different element. treat as new element
+                         createElm(
+                           newStartVnode,
+                           insertedVnodeQueue,
+                           parentElm,
+                           oldStartVnode.elm,
+                           false,
+                           newCh,
+                           newStartIdx
+                         );
+                       }
+                     }
+                     newStartVnode = newCh[++newStartIdx];
+                   }
+                 }
+                 if (oldStartIdx > oldEndIdx) {
+                   /**
+                    * 如果oldChildren比newChildren先循环完毕，
+                    * 那么newChildren里面剩余的节点都是需要新增的节点，
+                    * 把[newStartIdx, newEndIdx]之间的所有节点都插入到DOM中
+                    */
+                   refElm = isUndef(newCh[newEndIdx + 1])
+                     ? null
+                     : newCh[newEndIdx + 1].elm;
+                   addVnodes(
                      parentElm,
-                     vnodeToMove.elm,
-                     oldStartVnode.elm
+                     refElm,
+                     newCh,
+                     newStartIdx,
+                     newEndIdx,
+                     insertedVnodeQueue
                    );
-               } else {
-                 // same key but different element. treat as new element
-                 createElm(
-                   newStartVnode,
-                   insertedVnodeQueue,
-                   parentElm,
-                   oldStartVnode.elm,
-                   false,
-                   newCh,
-                   newStartIdx
-                 );
+                 } else if (newStartIdx > newEndIdx) {
+                   /**
+                    * 如果newChildren比oldChildren先循环完毕，
+                    * 那么oldChildren里面剩余的节点都是需要删除的节点，
+                    * 把[oldStartIdx, oldEndIdx]之间的所有节点都删除
+                    */
+                   removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
+                 }
                }
-             }
-             newStartVnode = newCh[++newStartIdx];
-           }
-         }
-         if (oldStartIdx > oldEndIdx) {
-           /**
-            * 如果oldChildren比newChildren先循环完毕，
-            * 那么newChildren里面剩余的节点都是需要新增的节点，
-            * 把[newStartIdx, newEndIdx]之间的所有节点都插入到DOM中
-            */
-           refElm = isUndef(newCh[newEndIdx + 1])
-             ? null
-             : newCh[newEndIdx + 1].elm;
-           addVnodes(
-             parentElm,
-             refElm,
-             newCh,
-             newStartIdx,
-             newEndIdx,
-             insertedVnodeQueue
-           );
-         } else if (newStartIdx > newEndIdx) {
-           /**
-            * 如果newChildren比oldChildren先循环完毕，
-            * 那么oldChildren里面剩余的节点都是需要删除的节点，
-            * 把[oldStartIdx, oldEndIdx]之间的所有节点都删除
-            */
-           removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
-         }
-       }
-       ```
+               ```
 
     2. 原理二
+       https://blog.csdn.net/weixin_44972008/article/details/115620198
        将新的虚拟节点和旧的虚拟节点进行 diff 比较, 进行最小量更新
        要求是同一个节点(选择器相同且 key 相同)才会进行精细化比较; 只进行同层比较, 不会进行跨层比较
        1. h 函数- 用于创建虚拟节点
@@ -828,6 +848,7 @@ https://juejin.cn/post/6961222829979697165
 21. nextTick 的使用场景和原理
     当数据更新时，在 dom 渲染之后，自动执行 nextTick 中的回调
     在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+
 22. Vue.mixin(混入) 的使用场景和原理
 
     ```js

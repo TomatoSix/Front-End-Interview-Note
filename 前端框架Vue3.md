@@ -813,9 +813,12 @@ setup() {
 }
 ```
 
-# fragment 组件
+# fragment(碎片) 组件
 
-# teleport 组件
+1. vue2 中只能有一个根标签
+2. vue3 中组件可以没有根标签，内部会将多个标签包含在一个 Fragment 虚拟元素中
+
+# teleport(瞬移) 组件
 
 # suspense 组件
 
@@ -824,3 +827,5 @@ setup() {
 onMounted
 onUpdated
 onUnmounted
+
+# Composition API 的优势

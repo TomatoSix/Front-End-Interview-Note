@@ -1661,6 +1661,45 @@ img {
 
 预加载主要是为了避免网络不好、或者图片太大时，页面长时间给用户留白的尴尬。常见的操作是先让这个 img 标签展示一个占位图，然后创建一个 Image 实例，让这个 Image 实例的 src 指向真实的目标图片地址、观察该 Image 实例的加载情况 —— 当其对应的真实图片加载完毕后，即已经有了该图片的缓存内容，再将 DOM 上的 img 元素的 src 指向真实的目标图片地址。此时我们直接去取了目标图片的缓存，所以展示速度会非常快，从占位图到目标图片的时间差会非常小、小到用户注意不到，这样体验就会非常好了。
 
+```js
+function loadImg(url) {
+  return new Promise((resolve, reject) => {
+    // 创建一个Image对象
+    const img = new Image();
+    // 监听图片的加载
+    img.onload = function () {
+      console.log("一张图片加载完成");
+      resolve(img);
+    };
+    img.onerror = function () {
+      reject(new Error("Could not load image at" + url));
+    };
+    // 定义Image对象的src, 这样做就相当于给浏览器缓存了一张图片
+    img.src = url;
+  });
+}
+const allImgPreloader = (imgs) => {
+  let promiseArr = [];
+  imgs.forEach((url) => {
+    //所有加载promise
+    promiseArr.push(loadImg(url));
+  });
+  //执行结果
+  return Promise.all(promiseArr);
+};
+
+let imgs = [
+  require("../../imgs/pic1.png"),
+  require("../../imgs/pic2.png"),
+  require("../../imgs/pic3.png"),
+  require("../../imgs/pic4.png"),
+  require("../../imgs/pic5.png"),
+  require("../../imgs/pic6.png"),
+];
+
+let res = await allImgPreloader(imgs);
+```
+
 # 数据的双向绑定
 
     ```html
@@ -1903,6 +1942,34 @@ son -> father -> body -> html -> document
 
 原理：不是给每个子节点设置事件监听器，而是事件监听器设置在其父节点上，然后利用冒泡原理影响设置每个子节点
 
+# 获取节点各种操作
+
+1. 获取元素的标签名
+
+```js
+const box = document.getElementById("box");
+box.tagName;
+box.nodeName;
+```
+
+2. 获取和修改元素的 class、id
+
+```js
+// 获取
+console.log(box.id);
+console.log(box.className);
+// 修改
+box.id = "outer";
+box.className = "btn";
+```
+
+3. 操作元素中的属性
+   1. setAttribute
+   2. getAttribute
+   3. attributes 获取元素的所有属性,返回一个 NamedNodeMap 合集，可以 xxx.attributes[i] 访问
+      1. nodeName 元素属性名
+      2. nodeValue 元素属性值
+
 # BOM 浏览器对象模型 Browser Object Module
 
 DOM 的顶级对象是 document
@@ -2054,6 +2121,8 @@ back()：相当于浏览器的“后退”按钮
 1. DOM 0 级
 2. DOM 2 级
 3. DOM 3 级
+
+# src 和 href 的区别
 
 # 错误处理方案
 
