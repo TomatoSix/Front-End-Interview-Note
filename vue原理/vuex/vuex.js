@@ -76,6 +76,7 @@ function install(_Vue) {
   // 使用vue的混入mixin, 混入到组件的生命周期, 会先于组件的声明周期
   Vue.mixin({
     beforeCreate() {
+      // 如果有根实例
       if (this.$options && this.$options.store) {
         // 把this.$options中的store挂在到实例的$store中
         // 可以通过this.$store.xxx获取

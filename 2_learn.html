@@ -28,21 +28,18 @@
     </div>
   </body>
   <script>
-    // var name = "666";
-    // (function () {
-    //   console.log(name, "name");
-    //   if (typeof name === "undefined") {
-    //     var name = "Jack";
-    //     console.log("Goodbye " + name); // Goodbye Jack
-    //   } else {
-    //     console.log("Hello " + name);
-    //   }
-    // })();
-
-    async function returnData() {
-      console.log("111");
-    }
-    let res = returnData();
-    console.log(res, "res");
+    let myInstance = function (left, right) {
+      let L = left.__proto__;
+      let R = right.prototype;
+      while (true) {
+        if (L == null) return false;
+        if (L !== R) {
+          L = L.__proto__;
+        } else {
+          return true;
+        }
+      }
+      return;
+    };
   </script>
 </html>

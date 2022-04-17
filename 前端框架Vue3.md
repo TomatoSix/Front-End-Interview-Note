@@ -371,13 +371,13 @@ Object.defineProperty(p, "age", {
 
 1. 简写
 
-   ```
+   ```js
    <div :class="styledata">
    ```
 
 2. 动态绑定属性
 
-   ```
+   ```js
    <div :[name]="value"></div>
    data() {
      return {
@@ -389,7 +389,7 @@ Object.defineProperty(p, "age", {
 
 3. 绑定一个对象
 
-   ```
+   ```js
    <div v-bind="data"></div>
 
    data() {
@@ -819,6 +819,30 @@ setup() {
 2. vue3 中组件可以没有根标签，内部会将多个标签包含在一个 Fragment 虚拟元素中
 
 # teleport(瞬移) 组件
+
+```js
+// child.vue
+// 设置一个模态框(弹窗)
+// to表示该组件要插入的位置
+<teleport to="body">
+  <div class="mask">
+    <div>
+      <h3>我是弹窗</h3>
+      <button>关闭弹窗</button>
+    </div>
+  </div>
+</teleport>
+
+<style>
+.mask {
+  position: absolute;
+  top: 0,
+  left: 0,
+  right: 0
+  bottom: 0
+}
+<style>
+```
 
 # suspense 组件
 

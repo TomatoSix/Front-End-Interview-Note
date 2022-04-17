@@ -604,10 +604,16 @@ https://juejin.cn/post/6961222829979697165
     });
     ```
 
-19. vuex 原理
+19. map 的使用
+
+20. vuex 原理
+
+    15 张图，20 分钟吃透 Diff 算法核心原理，我说的！！！
+    https://juejin.cn/post/6994959998283907102
+
     Vuex 的双向绑定通过调用 new Vue 实现，然后通过 Vue.mixin 注入到 Vue 组件的生命周期中，再通过劫持 state.get 将数据放入组件中
 
-20. diff 算法原理
+21. diff 算法原理
 
     1. 原理一
        https://vue-js.com/learn-vue/virtualDOM/patch.html#_1-%E5%89%8D%E8%A8%80
@@ -845,25 +851,90 @@ https://juejin.cn/post/6961222829979697165
        要求是同一个节点(选择器相同且 key 相同)才会进行精细化比较; 只进行同层比较, 不会进行跨层比较
        1. h 函数- 用于创建虚拟节点
 
-21. nextTick 的使用场景和原理
+22. nextTick 的使用场景和原理
     当数据更新时，在 dom 渲染之后，自动执行 nextTick 中的回调
     在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
 
-22. Vue.mixin(混入) 的使用场景和原理
+23. Vue.mixin(混入) 的使用场景和原理
 
-    ```js
-    Vue.mixin = function (mixin: Object) {
-      // 将传入的mixin对象与this.options合并，并返回给this.options
-      this.options = mergeOptions(this.options, mixin);
-      // 传给之后所有vue实例
-      return this;
-    };
-    ```
+    1. 使用场景
 
-23. keep-alive 使用场景和原理
+       1. 每一个 options API 都可以在 mixin.js 中写
+       2. 如果 mixin.js 中的 data 和 methods 中的方法和组件有冲突，则使用组件中的,例如如下代码的 x
+       3. 但是生命周期钩子都要,顺序是先 mixin,后组件
+       4. 全局混合 Vue.mixin(xxx)
+       5. 局部混入 mixins: [xxx, xxx]
 
-    1. 对 keep-alive 的了解
+       ```js
+       // mixin.js
+       export const mixin1 = {
+         methods: {
+           showName() {
+             alert(this.name);
+           },
+         },
+         mounted() {
+           console.log("你好啊");
+         },
+       };
 
+       export const mixin2 = {
+         data() {
+           return {
+             x: 200,
+             y: 200,
+           };
+         },
+       };
+       ```
+
+       ```js
+       import { mixin1, mixin2 } from "./mixin.js";
+       export default {
+         name: "school",
+         data() {
+           return {
+             name: "six",
+             address: "杭州",
+             x: 666,  // 有冲突则使用组件中的
+           };
+         },
+         mounted() {
+           console.log("你好啊！！！");  // 声明周期全部使用，先mixin,后component
+         }
+         // options API
+         mixins: [mixin],
+       };
+       ```
+
+       ```js
+       //　main.js
+       // 全局混入,可以直接在组件中使用, 不需要 mixins: [mixin1, mixin2]
+       import Vue from "vue";
+       import { mixin, mixin2 } from "./mixin.js";
+       Vue.mixin(mixin1);
+       Vue.mixin(mixin2);
+
+       new Vue({
+         el: "#app",
+         render: (h) => h(App),
+       });
+       ```
+
+    2. 原理
+
+       ```js
+       Vue.mixin = function (mixin: Object) {
+         // 将传入的mixin对象与this.options合并，并返回给this.options
+         this.options = mergeOptions(this.options, mixin);
+         // 传给之后所有vue实例
+         return this;
+       };
+       ```
+
+24. keep-alive 使用场景和原理
+
+    1. 使用场景
        是 Vue 内置的一个组件，可以使被包含的组件保留状态，避免重新渲染
 
        1. 一般结合路由和动态组件一起使用，用于缓存组件
@@ -876,16 +947,16 @@ https://juejin.cn/post/6961222829979697165
     2. 原理
        缓存淘汰策略 LRU(最近最少使用)
 
-24. 路由懒加载原理
+25. 路由懒加载原理
     通过 import()实现。通过 Webpack 编译打包后，会把每个路由组件的代码分割成一一个 js 文件，初始化时不会加载这些 js 文件，只当激活路由组件才会去加载对应的 js 文件。
 
-25. Vue.set 原理
+26. Vue.set 原理
 
-26. Vue.extend 作用和原理
+27. Vue.extend 作用和原理
 
-27. 自定义指令使用和原理
+28. 自定义指令使用和原理
 
-28. Vue 模板编译原理
+29. Vue 模板编译原理
 
 # 插槽的使用
 
@@ -1951,13 +2022,6 @@ export default {
 bbbbbbbbbbbbbbbbb undefined
 bbbbbbbbbbbbbbbbb 打印出当前组件
 可用于加载中，模拟延迟效果
-
-# 原理
-
-## diff 原理
-
-15 张图，20 分钟吃透 Diff 算法核心原理，我说的！！！
-https://juejin.cn/post/6994959998283907102
 
 # 非单文件组件和单文件组件？
 

@@ -105,6 +105,7 @@ module.exports = {
 
 ### 打包图片资源
 
+```js
 const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -152,3 +153,4 @@ template: './src/index.html'
 ],
 mode: 'development', 开发模式
 }
+```

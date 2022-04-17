@@ -275,7 +275,7 @@ Undefiend 转为 NaN
 null 转为 0
 boolean true 转为 1 ， false 转为 0
 String 数字值直接转为数字 包含非数字值转换为 NaN  
-[] -> 0, '' -> 0
+[] -> 0, '' -> 0, [1] -> 1
 除了数组的引用类型 -> NaN
 
 可以用 parseInt() Number()
@@ -302,59 +302,44 @@ false 转为 false
 
 https://segmentfault.com/a/1190000022298822 冴羽
 
-1. == 是非严格意义上的相等，会触发隐式转换
+1.  如果 x 与 y 是同一类型：
 
-   两边类型相同，比较大小
-   两边类型不同，根据下方表格，再进一步进行比较。
+    1. x 是 Undefined，返回 true
+    2. x 是 Null，返回 true
+    3. x 是数字：
 
-   Null == Undefined ->true
-   String == Number ->先将 String 转为 Number，在比较大小
-   Boolean == Number ->现将 Boolean 转为 Number，在进行比较
-   Object == String，Number，Symbol -> Object 转化为原始类型
+       1. x 是 NaN，返回 false
+       2. y 是 NaN，返回 false
+       3. x 与 y 相等，返回 true
+       4. x 是+0，y 是-0，返回 true
+       5. x 是-0，y 是+0，返回 true
+       6. 返回 false
 
-   1. 如果有一个操作数是布尔值，则在比较相等性之前先将其转换为数值——false 转换为 0，而 true 转换为 1；
+    4. x 是字符串，完全相等返回 true,否则返回 false
+    5. x 是布尔值，x 和 y 都是 true 或者 false，返回 true，否则返回 false
+    6. x 和 y 指向同一个对象，返回 true，否则返回 false
 
-   2. 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值
+2.  x 是 null 并且 y 是 undefined，返回 true
+3.  x 是 undefined 并且 y 是 null，返回 true
+4.  x 是数字，y 是字符串，判断 x == ToNumber(y)
+5.  x 是字符串，y 是数字，判断 ToNumber(x) == y
+6.  x 是布尔值，判断 ToNumber(x) == y
+7.  y 是布尔值，判断 x ==ToNumber(y)
+8.  x 不是字符串或者数字，y 是对象，判断 x == ToPrimitive(y)
+9.  x 是对象，y 不是字符串或者数字，判断 ToPrimitive(x) == y
+10. 返回 false
 
-   3. 如果一个操作数是对象，另一个操作数不是，则调用对象的 valueOf()方法，用得到的基本类型值按照前面的规则进行比较
-
-   4. 如果 x 与 y 是同一类型：
-
-      1. x 是 Undefined，返回 true
-      2. x 是 Null，返回 true
-      3. x 是数字：
-
-         1. x 是 NaN，返回 false
-         2. y 是 NaN，返回 false
-         3. x 与 y 相等，返回 true
-         4. x 是+0，y 是-0，返回 true
-         5. x 是-0，y 是+0，返回 true
-         6. 返回 false
-
-      4. x 是字符串，完全相等返回 true,否则返回 false
-      5. x 是布尔值，x 和 y 都是 true 或者 false，返回 true，否则返回 false
-      6. x 和 y 指向同一个对象，返回 true，否则返回 false
-
-   5. x 是 null 并且 y 是 undefined，返回 true
-   6. x 是 undefined 并且 y 是 null，返回 true
-   7. x 是数字，y 是字符串，判断 x == ToNumber(y)
-   8. x 是字符串，y 是数字，判断 ToNumber(x) == y
-   9. x 是布尔值，判断 ToNumber(x) == y
-   10. y 是布尔值，判断 x ==ToNumber(y)
-   11. x 不是字符串或者数字，y 是对象，判断 x == ToPrimitive(y)
-   12. x 是对象，y 不是字符串或者数字，判断 ToPrimitive(x) == y
-   13. 返回 false
-
-   ```js
-   [] == ![]  // true
-   // 空数组转为数字为 0 ， 除了数组外的引用类型全部为 NaN
-   // [] == ![] -> [] == !true -> [] == 0 -> 0 == 0 -> true
-   {} == !{}  //false
-   // {} 转数字是NaN
-   // {} == !{} -> {} == false -> {} == 0 -> NaN == 0 -> false
-   [] == []  //false
-   {} == {}  //false
-   ```
+```js
+[] == ![]  // true
+// 空数组转为数字为 0 ， 除了数组外的引用类型全部为 NaN
+// [] == ![] -> [] == !true -> [] == false -> [] == 0 -> '' == 0 =-> 0 == 0 -> true
+{} == !{}  //false
+// {} 转数字是NaN, 所以 {} 和所有数字比较都是false
+// {} == !{} -> {} == false -> {} == 0 -> NaN == 0 -> false
+[] == []  //false
+{} == {}  //false
+NaN == NaN // false
+```
 
 2. === 是严格意义上的相等，会比较两边的数据类型和值大小
 
@@ -426,6 +411,7 @@ console.log(obj + 1); // 输出7,  内置的toPrimitive没有的话调用valueOf
 JS 所有数字都保存成 64 位浮点数，有两个限制
 
 1. 数值的精度只能到 53 个二进制位(相当于 16 个十进制位)，超过则无法保持精度
+   `9007199254740992 === 9007199254740993; // → true 居然是true!`
 
 2. 大于或等于 2 的 1024 次方的数值，JS 无法表示，会返回 Infinity
 
@@ -1419,6 +1405,9 @@ ajax.onreadystatechange = function () {
 
 # 跨域方案
 
+https://juejin.cn/post/7066420545327218725
+面试题 -- 跨域请求如何携带 cookie?
+
 # fetch
 
 关注分离思想
@@ -1553,6 +1542,11 @@ V8 将堆内存分为新生代内存和老生代内存两区域，采用不同�
 - 老生代垃圾回收 标记清除算法
 
 # Math 方法
+
+# 事件循环在 nodejs 和浏览器中的区别 ！！！！！
+
+https://juejin.cn/post/6844903761949753352
+浏览器与 Node 的事件循环(Event Loop)有何区别?
 
 # 懒加载
 
@@ -1855,7 +1849,8 @@ nodeValue 节点值
    创建多个元素效率稍微低一些，但是结构更清晰
 
 - 总结
-  不同浏览器下，innerHTML 效率要比 createElement 高
+  1. innerHTML 方式创建多个元素的时候效率会更高，但是不能使用字符串拼接的方式，使用字符串拼接的时候会不断开辟新的内存，所以时间长，可以使用数组的方式。
+  2. createElement 在创建多个元素的时候效率较低，但是结构更清晰。
 
 ## 事件处理程序
 
