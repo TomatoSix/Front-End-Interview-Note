@@ -1,5 +1,4 @@
 // 手写 VueRouter
-
 let Vue; // 全局变量
 class VueRouter {
   constructor(options) {

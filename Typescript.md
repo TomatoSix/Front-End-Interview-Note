@@ -773,3 +773,8 @@ const action: IAction = {
 # 泛型
 
 # 装饰器
+
+# type 和 interface 的区别
+
+interface 可以重复的对某个接口来定义属性和方法；
+而 type 定义的是别名，别名是不能重复的；

@@ -543,7 +543,7 @@ https://juejin.cn/post/6976272394247897101
         ```css
         .inner {
           display: block;
-          width: 100px; // width必须定宽，否则会继承父元素的宽度
+          width: 100px; /* width必须定宽，否则会继承父元素的宽度 */
           margin: 0 auto;
         }
         ```
@@ -1402,6 +1402,21 @@ https://juejin.cn/post/6976272394247897101
 
 15. 轮播图
 
+    1. 先设置 box overflow: hidden; 使得里面的子元素不影响外元素
+    2. <ul><li> 设置li标签 `float:left` 使得图片一行放置
+    3. 对<ul>设置`transition: all 2s`; 添加过渡效果
+    4. 设置定时器 setInterval
+       1. 设置变量 flag 表示图片想左还是向右转， count 表示第几张图片
+       2. 如果向右转
+          `count++`
+          `ul.style.transform = "translate(" + -800 * count + "px)";`
+          当 count >= li.length-1, flag = false,表示向左转
+       3. 如果向左转
+          count--
+          `ul.style.transform = "translate(" + -800 * count + "px)";`
+          当 count <= 0, flag = true, 表示图片开始向右转
+    5. 以及其它鼠标等等操作
+
 16. 实现下拉菜单
 
     ```css
@@ -1485,7 +1500,7 @@ https://juejin.cn/post/6976272394247897101
    box-sizing: content-box || border-box || inherit;
    ```
 
-2. flex: 1 是什么意思？ 0 1 auto
+2. flex: 1 是什么意思？ 1 1 0%
 
    CSS 属性 flex 规定了弹性元素如何伸长或缩短以适应 flex 容器中的可用空间。
    flex 属性是 flex-grow,flex-shrink,flex-basis 的缩写，默认值为 0 1 auto
@@ -1711,6 +1726,7 @@ https://juejin.cn/post/6976272394247897101
 15. css 提高性能的方法有哪些
 
 16. 图片方案选型
+
     1. JPG 有损压缩
        可应用于背景图、轮播图
        1. 不支持透明度处理
@@ -1729,3 +1745,16 @@ https://juejin.cn/post/6976272394247897101
           被运用于众多使用大量小图标的网页应用之上。它可取图像的一部分来使用，使得使用一个图像文件替代多个小文件成为可能
     5. WebP
        存在兼容性问题
+
+17. 让 Chrome 支持小于 12px 的文字方式有哪些？
+
+    ```css
+    /* 10px文字 */
+    .span1 {
+      font-size: 12px;
+      /* 因为scale属性只对定义宽高的元素生效,所以将span元素转为行内块元素 */
+      display: inline-block;
+      /* 用transform:scale()这个属性进行缩放 */
+      -webkit-transform: scale(0.8);
+    }
+    ```

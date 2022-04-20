@@ -1,24 +1,32 @@
-let activeReactiveFn = null;
+// vue2响应式手写
 
+let activeReactiveFn = null;
 class Depend {
   constructor() {
     this.reactiveFn = new Set();
   }
+
   depend() {
     if (activeReactiveFn) {
       this.reactiveFn.add(activeReactiveFn);
     }
   }
+
   notify() {
     this.reactiveFn.forEach((fn) => fn());
   }
 }
+function watchFn(fn) {
+  activeReactiveFn = fn;
+  fn();
+  activeReactiveFn = null;
+}
 let wk = new WeakMap();
-function getDepend(target, key) {
-  let map = wk.get(target);
+function getDepend(obj, key) {
+  let map = wk.get(obj);
   if (!map) {
     map = new Map();
-    wk.set(target, map);
+    wk.set(obj, map);
   }
   let depend = map.get(key);
   if (!depend) {
@@ -27,25 +35,24 @@ function getDepend(target, key) {
   }
   return depend;
 }
-function watchFn(fn) {
-  activeReactiveFn = fn;
-  fn();
-  activeReactiveFn = null;
-}
 
 function reactive(obj) {
-  return new Proxy(obj, {
-    get(target, key, receiver) {
-      let depend = new getDepend(target, key);
-      depend.depend();
-      return Reflect.get(target, key, receiver);
-    },
-    set(target, key, value, receiver) {
-      Reflect.set(target, key, value, receiver);
-      let depend = new getDepend(target, key);
-      depend.notify();
-    },
+  Object.keys(obj).forEach((key) => {
+    let value = obj[key];
+    Object.defineProperty(obj, key, {
+      get() {
+        let depend = getDepend(obj, key);
+        depend.depend();
+        return value;
+      },
+      set(newValue) {
+        value = newValue;
+        let depend = getDepend(obj, key);
+        depend.notify();
+      },
+    });
   });
+  return obj;
 }
 
 let obj = {
@@ -53,9 +60,9 @@ let obj = {
   age: 18,
 };
 
-let proxyObj = reactive(obj);
-watchFn(() => {
-  console.log(proxyObj.name, "name修改");
-});
+let objProxy = reactive(obj);
 
-proxyObj.name = "番茄炒小六";
+watchFn(() => {
+  console.log(obj.name, "已更新");
+});
+objProxy.name = "666";

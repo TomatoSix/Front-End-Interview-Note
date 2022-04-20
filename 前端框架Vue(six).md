@@ -604,7 +604,50 @@ https://juejin.cn/post/6961222829979697165
     });
     ```
 
-19. map 的使用
+19. map 的使用 ...mapGetters ...mapActions ...mapState ...mapMutations
+
+    ```js
+    import { mapState, mapGetters } from "vuex";
+    export default {
+      computed: {
+        // 与下面例子相同
+        // 或者 第一个参数表示新取的名字，后面的表示state中的数据
+        ...mapState({sum, 'sum'}, {bigSum, 'bigSum'})
+        // 精简写法
+        ...mapState(['sum', 'bigSum'])
+        // sum() {
+        //   return this.$store.state.sum;
+        // },
+        // bigSum() {
+        //   return this.$store.state.bogSum;
+        // },
+
+        // 与下面的相同
+        ...mapGetters['bigSum'],
+        // bigSum() {
+        //   return this.$store.getters.bigSum
+        // }
+      },
+    };
+    ```
+
+    ```js
+    import { mapActions, mapMutations } from "vuex";
+    export default {
+      methods: {
+        // 参数n则要求在模板中就传入
+        // <button @click="increment(n)"></button>
+        ...mapMutations({increment, 'JIA'}, {decrement, 'JIAN'}),
+        // 与下面的相同
+        increment() {
+          this.$store.commit('JIA', this.n)
+        },
+        decrement() {
+          this.$store.commit('JIAN', this.n)
+        }
+      }
+    }
+    ```
 
 20. vuex 原理
 
@@ -1037,7 +1080,7 @@ https://juejin.cn/post/6961222829979697165
    //包裹插槽内容
    <Category>
    <template scope="games">
-   <ul>
+     <ul>
        <li v-for="(item) in games">{{ item }}</li>
      </ul>
    </template>
@@ -1081,25 +1124,26 @@ Model-View-ViewModel(MVVM)是一种软件架构设计模式
 
 1. MVVM 模型, 包括 DOM Listeners 和 Data Bindings
 
-1. View 层(视图)
-   视图层，即用户界面，由 HTML 和 CSS 构建
-1. Model 层(模型)
-   指数据模型，即后端提供的 API 接口，指后端进行的各种业务逻辑处理和数据操控
-1. ViewModel 层(视图模型)
-   视图数据层，View 和 Model 层的桥梁
+   1. View 层(视图)
+      视图层，即用户界面，由 HTML 和 CSS 构建
 
-1. 模型转换成视图, 即将后端传递的数据转换成看到的页面，实现方式是数据绑定
-1. 视图转换成模型，即将看到的页面转换成后端的数据，实现方式是 DOM 事件监听
-   两个方向都实现, 就称为数据的双向绑定
+   2. Model 层(模型)
+      指数据模型，即后端提供的 API 接口，指后端进行的各种业务逻辑处理和数据操控
+   3. ViewModel 层(视图模型)
+      视图数据层，View 和 Model 层的桥梁
+
+   4. 模型转换成视图, 即将后端传递的数据转换成看到的页面，实现方式是数据绑定
+   5. 视图转换成模型，即将看到的页面转换成后端的数据，实现方式是 DOM 事件监听
+      两个方向都实现, 就称为数据的双向绑定
 
 1. MVC 和 MVVM 最大的区别
 
-1. MVVM 实现了数据与页面的双向绑定，MVC 只实现了 Model 和 View 的单向绑定。
-1. MVVM 实现了页面业务逻辑和渲染之间的解耦，也实现了数据与视图的解耦，并且可以组件化开发。
+   1. MVVM 实现了数据与页面的双向绑定，MVC 只实现了 Model 和 View 的单向绑定。
+   2. MVVM 实现了页面业务逻辑和渲染之间的解耦，也实现了数据与视图的解耦，并且可以组件化开发。
 
 1. vue 如何体现 MVVM 思想
-1. mustache 语法，实现了数据与视图的绑定
-1. v-on 事件绑定，通过事件操作数据, v-model 会发生响应的变化
+   1. mustache 语法，实现了数据与视图的绑定
+   2. v-on 事件绑定，通过事件操作数据, v-model 会发生响应的变化
 
 # 什么是双向绑定
 
@@ -1701,7 +1745,7 @@ params 参数 1. 放在链接中 必须和 name 命名路由一起 2.props 配�
 
    1. 字符串写法
 
-   ```
+   ```js
    <router-link
       :to="`/home/message/detail?id=${m.id}&title=${m.title}`"
    >
@@ -1709,7 +1753,7 @@ params 参数 1. 放在链接中 必须和 name 命名路由一起 2.props 配�
 
    2. 对象写法, 可以写 path(路径要写全)或者写 name
 
-   ```
+   ```js
    <router-link
     :to="{
       path:'/home/message/detail',
@@ -1736,7 +1780,7 @@ params 参数 1. 放在链接中 必须和 name 命名路由一起 2.props 配�
    ];
    ```
 
-   ```
+   ```js
    // params一定要和name搭配
    <router-link :to="{
      name: "detail",

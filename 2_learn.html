@@ -7,39 +7,21 @@
     <title>Document</title>
   </head>
   <style>
-    .child1 {
-      background-color: black;
-    }
-    .child2 {
-      background-color: pink;
-      float: left;
-      /* transform: translateY(200) */
-    }
-    .child3 {
+    .box {
+      width: 100px;
+      height: 100px;
       background-color: tomato;
+    }
+    .content {
+      margin: 0 auto;
+      background-color: pink;
+      width: 50px;
     }
   </style>
   <body>
-    <div class="parent">
-      <div class="child1">child1content</div>
-      <div class="child2">child2content</div>
-      <div class="child3">child3content</div>
-      <img src="" alt="" />
+    <div class="box">
+      <div class="content">111</div>
     </div>
   </body>
-  <script>
-    let myInstance = function (left, right) {
-      let L = left.__proto__;
-      let R = right.prototype;
-      while (true) {
-        if (L == null) return false;
-        if (L !== R) {
-          L = L.__proto__;
-        } else {
-          return true;
-        }
-      }
-      return;
-    };
-  </script>
+  <script></script>
 </html>
