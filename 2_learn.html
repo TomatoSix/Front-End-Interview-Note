@@ -23,5 +23,36 @@
       <div class="content">111</div>
     </div>
   </body>
-  <script></script>
+  <script>
+    var partition = function (s) {
+      let res = [];
+      var getPath = function (path, i) {
+        if (i === s.length) {
+          res.push([...path]);
+          return;
+        }
+        for (let j = i; j < s.length; j++) {
+          let str = s.slice(i, j + 1);
+          console.log(str, "str");
+          if (!isHW(str)) continue;
+          path.push(str);
+          getPath(path, j + 1);
+          path.pop();
+        }
+      };
+      getPath([], 0);
+      return res;
+    };
+
+    function isHW(str) {
+      for (let i = 0, j = str.length - 1; i < j; i++, j--) {
+        if (str[i] !== str[j]) {
+          return false;
+        }
+      }
+      return true;
+    }
+    let res = partition("aab");
+    console.log(res, "res");
+  </script>
 </html>
