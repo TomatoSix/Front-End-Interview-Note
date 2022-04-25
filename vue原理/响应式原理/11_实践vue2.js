@@ -61,6 +61,7 @@ function reactive(obj) {
         depend.depend();
         return value;
       },
+      // 只有一个属性newValue
       set: function (newValue) {
         value = newValue;
         const depend = getDepend(obj, key);
@@ -73,7 +74,13 @@ function reactive(obj) {
 
 //对象的响应式
 const obj = {
-  name: "why", // 每一个属性都有一个depend对象
+  name: "six",
   age: 18,
 };
-const objProxy = reactive(obj);
+let proxyObj = reactive(obj);
+
+watchFn(() => {
+  console.log(proxyObj.name, "obj被修改了");
+});
+
+proxyObj.name = "番茄炒小六";

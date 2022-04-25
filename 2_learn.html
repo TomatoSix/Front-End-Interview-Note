@@ -8,79 +8,15 @@
   </head>
   <style>
     .box {
-      width: 100px;
-      height: 100px;
-      background-color: tomato;
-    }
-    .content {
-      margin: 0 auto;
-      background-color: pink;
-      width: 50px;
+      width: 25px;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 50px solid blue;
     }
   </style>
   <body>
-    <div class="box">
-      <div class="content">111</div>
-    </div>
+    <div class="box"></div>
   </body>
-  <script>
-    var multiply = function (num1, num2) {
-      let m = num1.length,
-        n = num2.length;
-      let arr = new Array(m + n).fill(0);
-      for (let i = m - 1; i >= 0; i--) {
-        for (let j = n - 1; j >= 0; j--) {
-          let mul = (num1[i] - 0) * (num2[j] - 0);
-          let p1 = i + j;
-          let p2 = i + j + 1;
-          let sum = mul + arr[p2];
-          arr[p2] = sum % 10;
-          arr[p1] += Math.floor(sum / 10);
-        }
-      }
-      let i = 0;
-      while (i < arr.length && arr[i] === 0) {
-        i++;
-      }
-      let str = "";
-      while (i < arr.length) {
-        str += arr[i];
-        i++;
-      }
-      return str.length == 0 ? "0" : str;
-    };
-    var multiply2 = function (num1, num2) {
-      let m = num1.length,
-        n = num2.length;
-      // 结果最多为m+n位
-      let res = new Array(m + n).fill(0);
-      // 从个位数开始逐位相乘
-      for (let i = m - 1; i >= 0; i--) {
-        for (let j = n - 1; j >= 0; j--) {
-          let mul = (num1[i] - 0) * (num2[j] - 0);
-          // 乘积在res对应的索引位置
-          let p1 = i + j,
-            p2 = i + j + 1;
-          // 叠加到res上
-          let sum = mul + res[p2];
-          res[p2] = sum % 10;
-          res[p1] += parseInt(sum / 10);
-        }
-      }
-      // 结果前缀可能存在0（未使用的位）
-      let i = 0;
-      while (i < res.length && res[i] == 0) {
-        i++;
-      }
-      // 将计算结果转化成字符串
-      let str = "";
-      for (; i < res.length; i++) {
-        str += res[i];
-      }
-      return str.length == 0 ? "0" : str;
-    };
-
-    let res = multiply("123", "456");
-    console.log(res, "res");
-  </script>
+  <script></script>
 </html>

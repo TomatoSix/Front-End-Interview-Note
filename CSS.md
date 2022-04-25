@@ -1478,6 +1478,18 @@ https://juejin.cn/post/6976272394247897101
     </div>
     ```
 
+17. 实现一个梯形
+
+    ```css
+    .box {
+      width: 25px;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 50px solid blue;
+    }
+    ```
+
 # 问题类
 
 1. 介绍 CSS 盒模型

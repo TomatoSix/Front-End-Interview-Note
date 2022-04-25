@@ -330,6 +330,7 @@ https://segmentfault.com/a/1190000022298822 冴羽
 10. 返回 false
 
 ```js
+[1] == [1] // false 都是对象会比较是否是同一对象
 [] == ![]  // true
 // 空数组转为数字为 0 ， 除了数组外的引用类型全部为 NaN
 // [] == ![] -> [] == !true -> [] == false -> [] == 0 -> '' == 0 =-> 0 == 0 -> true
@@ -345,6 +346,7 @@ NaN == NaN // false
 
    数据类型不同返回 false  
    数据类型相同，但值大小不同，返回 false
+   对于引用类型，判断是否指向同一对象
 
    - 缺点
 
@@ -1547,6 +1549,83 @@ V8 将堆内存分为新生代内存和老生代内存两区域，采用不同�
 
 https://juejin.cn/post/6844903761949753352
 浏览器与 Node 的事件循环(Event Loop)有何区别?
+
+# target 和 currentTarget 的区别
+
+1. target 是触发事件的元素
+2. currentTarget 是绑定事件的元素
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    #a {
+      width: 400px;
+      height: 400px;
+      background-color: tomato;
+    }
+    #b {
+      width: 300px;
+      height: 300px;
+      background-color: pink;
+    }
+    #c {
+      width: 200px;
+      height: 200px;
+      background-color: blanchedalmond;
+    }
+    #d {
+      width: 100px;
+      height: 100px;
+      background-color: gray;
+    }
+  </style>
+  <body>
+    <div id="a">
+      a
+      <div id="b">
+        b
+        <div id="c">
+          c
+          <div id="d">d</div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const a = document.getElementById("a");
+    const b = document.getElementById("b");
+    const c = document.getElementById("c");
+    const d = document.getElementById("d");
+    a.addEventListener("click", (e) => {
+      const { target, currentTarget } = e;
+      console.log(`target是${target.id}`);
+      console.log(`currentTarget是${currentTarget.id}`);
+    });
+    b.addEventListener("click", (e) => {
+      const { target, currentTarget } = e;
+      console.log(`target是${target.id}`);
+      console.log(`currentTarget是${currentTarget.id}`);
+    });
+    c.addEventListener("click", (e) => {
+      const { target, currentTarget } = e;
+      console.log(`target是${target.id}`);
+      console.log(`currentTarget是${currentTarget.id}`);
+    });
+    d.addEventListener("click", (e) => {
+      const { target, currentTarget } = e;
+      console.log(`target是${target.id}`);
+      console.log(`currentTarget是${currentTarget.id}`);
+    });
+  </script>
+</html>
+```
 
 # 懒加载
 
