@@ -47,9 +47,35 @@ String JS 的字符串包装类的类型
 # ts 基础类型
 
 1. Boolean
+
+   ```ts
+   // 默认情况下，如果可以推导出对应的标识符的类型时，可不加类型
+   let flag: boolean = true;
+   ```
+
 2. Number
+
+   ```ts
+   let num: number = 123;
+   num = 222;
+   ```
+
 3. String
+
+   ```ts
+   let num: string = "why";
+   num = "123";
+   ```
+
 4. Array
+
+   ```ts
+   // 需要确定数组中存放的元素类型,使用泛型
+   const names1：Array<string> = []; // 不推荐
+   // 表示names2为字符串类型的数组，推荐
+   const names2: string[] = []
+   ```
+
 5. Symbol
 
    ```ts
@@ -166,9 +192,19 @@ String JS 的字符串包装类的类型
     ```ts
     let n1: null = null;
     let n2: undefined = undefined;
+    // 可以把null赋值给string
+    let n3: string = null;
     ```
 
 13. 对象类型
+
+    ```ts
+    // 建议默认推导，不需要加类型（会出问题）
+    const info: object = {
+      name: "why",
+      age: 18,
+    };
+    ```
 
 14. 类类型
 

@@ -8,6 +8,7 @@ setup() {
   let age = 18
 
   function sayHello() {
+    // 不需要使用this
     alert(name, age)
   }
 
@@ -21,47 +22,48 @@ setup() {
 
 1. 定义一个响应式数据
    创建一个包含响应式数据的引用对象 RefImpl(reference implement) 引用实现
+   接收的数据可以是基本类型和对象类型
 2. - ref 把基本数据类型的变量'name'加工为引用对象，借助 Object.defineProperty()中的 get 和 set 完成的
    - 把对象'job'加工为 Proxy 代理对象，借助 reactive 函数
 
-```js
-setup() {
-  let name = ref('张三')
-  let age = ref(18)
+   ```js
+   setup() {
+     let name = ref('张三')
+     let age = ref(18)
 
-  function changeInfo() {
-    console.log(name)  // RefImpl {_rawValue: '张三'，value: '张三'} 对象
-  }
+     function changeInfo() {
+       console.log(name)  // RefImpl {_rawValue: '张三'，value: '张三'} 对象
+     }
 
-  return {
-    name, age, changeInfo
-  }
-}
-```
+     return {
+       name, age, changeInfo
+     }
+   }
+   ```
 
 3. 操作数据需要 ×××.value
 
-```js
-setup() {
-  let name = ref('张三')
-  let age = ref(18)
-  let job = ref({
-    type: '前端工程师',
-    salary: '30k'
-  })
+   ```js
+   setup() {
+     let name = ref('张三')
+     let age = ref(18)
+     let job = ref({
+       type: '前端工程师',
+       salary: '30k'
+     })
 
-  function changeInfo() {
-    // 修改name 和 age job
-    name.value = "李四"
-    age.value = 48
-    jon.value.type = '测试'
-  }
+     function changeInfo() {
+       // 修改name 和 age job
+       name.value = "李四"
+       age.value = 48
+       jon.value.type = '测试'
+     }
 
-  return {
-    name, age, changeInfo
-  }
-}
-```
+     return {
+       name, age, changeInfo
+     }
+   }
+   ```
 
 # reactive 函数
 
