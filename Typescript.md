@@ -364,6 +364,18 @@ String JS 的字符串包装类的类型
 
 # 类型别名 type
 
+```ts
+// type用于定义类型别名(type alias)
+type IdType = string | number | boolean;
+type PointType = {
+  x: number;
+  y: number;
+  z?: number;
+};
+function printId(id: IDType) {}
+function printPoint(point: pointType) {}
+```
+
 # 可选链 和 特殊操作符
 
 ```ts
@@ -453,7 +465,51 @@ function add(a1: any, a2: any): any {
 
 # 接口
 
-1. 接口的继承
+1. 通过类型别名来声明对象类型
+
+```ts
+// 通过类型别名来声明对象类型;
+type InfoType = { name: string; age: number };
+const info: InfoType = {
+  name: "why",
+  age: 18,
+};
+
+// 利用接口声明对象类型
+// 规范：接口名称前面加I
+interface IInfoType {
+  name: string;
+  age: number;
+}
+const info: IInfoType = {
+  name: "why",
+  age: 18,
+};
+```
+
+2. 接口的继承
+
+```ts
+interface ISwim {
+  swimming: () => void;
+}
+interface IFly {
+  flying: () => void;
+}
+// 支持多继承
+interface IAction extends ISwim,IFly {
+
+}
+
+const action: IAction = {
+  swimming() {}
+  flying() {}
+}
+
+
+```
+
+3. 交叉类型
 
 ```ts
 interface ISwim {
@@ -463,13 +519,33 @@ interface ISwim {
 interface IFly {
   flying: () => void;
 }
+// 交叉类型
+type MyType1 = ISwim & IFly;
+// 联合类型
+type MyType2 = ISwim | IFly;
+```
 
-interface IAction extends ISwim, IFly {}
+4. 类实现接口
+   编写一些公共的 API
 
-const action: IAction = {
-  swimming() {},
-  flying() {},
-};
+```ts
+interface ISwim {
+  swimming: () => void;
+}
+interface IEat {
+  eating: () => void;
+}
+class Animal {}
+// 继承：只能实现单继承
+// 实现：实现接口，类可以实现多个接口
+class Fish extends Animal implements ISwim, IEat {
+  swimming() {}
+  eating() {}
+}
+
+class Person implements ISwim {
+  swimming() {}
+}
 ```
 
 # 类
@@ -807,6 +883,33 @@ const action: IAction = {
 9. 类的类型
 
 # 泛型
+
+```ts
+function fn(a: any): any {
+  return a;
+}
+```
+
+在定义函数或是类时，如果遇到类型不明确就可以使用泛型
+
+```ts
+function fn<T>(a: T): T {
+  return a;
+}
+// 可以直接调用具有泛型的函数
+fn(10); //不指定泛型，TS可以自动对类型进行推断
+fn<string>("hello"); //指定泛型
+```
+
+```ts
+interface Inter{
+  length: number
+}
+
+function fn3<T extends Inter(a: T): number> {
+  return a.length
+}
+```
 
 # 装饰器
 
